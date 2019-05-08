@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet author="admin" id="1">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="admin" schemaName="storedb"/>
+			</not>
+		</preConditions>
+		<comment>CREATE admin IF NOT EXISTS</comment>
+		<createTable
+				schemaName="storedb"
+				tableName="admin">
+			<column name="id" type="varchar(36)">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(75)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="phone" type="varchar(20)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="email" type="varchar(100)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="email_verified_at" type="datetime(3)"/>
+			<column name="password" type="varchar(255)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="admin" id="2">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="category" schemaName="storedb"/>
+			</not>
+		</preConditions>
+		<comment>CREATE category IF NOT EXISTS</comment>
+		<createTable
+				schemaName="storedb"
+				tableName="category">
+			<column name="id" type="varchar(36)">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="name" type="varchar(75)">
+				<constraints nullable="false"/>
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet author="admin" id="3">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="product" schemaName="storedb"/>
+			</not>
+		</preConditions>
+		<comment>CREATE product IF NOT EXISTS</comment>
+		<createTable
+				schemaName="storedb"
+				tableName="product">
+			<column name="id" type="varchar(36)">
+				<constraints primaryKey="true" nullable="false"/>
+			</column>
+			<column name="category_id" type="varchar(36)">
+				<constraints nullable="false"
+							 foreignKeyName="fk_category_product_id"
+							 references="category(id)"/>
+			</column>
+			<column name="admin_id" type="varchar(36)">
+				<constraints nullable="false"
+							 foreignKeyName="fk_admin_product_id"
+							 references="admin(id)"/>
+			</column>
+			<column name="name" type="varchar(75)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="image" type="LONGBLOB"/>
+			<column name="price" type="int(10)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="creation_date" type="datetime(3)"/>
+			<column name="discount_price" type="int(10)" defaultValue="0"/>
+			<column name="quantity" type="int(10)" defaultValue="0"/>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
