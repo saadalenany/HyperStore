@@ -5,7 +5,6 @@ import com.spring.store.dao.models.CategoryModel;
 import com.spring.store.dao.repos.CategoryRepository;
 import com.spring.store.mappers.CategoryMapper;
 import com.spring.store.service.api.CategoryService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @Transactional
 public class CategoryServiceImpl implements CategoryService {

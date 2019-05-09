@@ -5,14 +5,12 @@ import com.spring.store.dao.models.AdminModel;
 import com.spring.store.dao.repos.AdminRepository;
 import com.spring.store.mappers.AdminMapper;
 import com.spring.store.service.api.AdminService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @Transactional
 public class AdminServiceImpl implements AdminService {

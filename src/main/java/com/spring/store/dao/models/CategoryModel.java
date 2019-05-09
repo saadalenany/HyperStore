@@ -1,12 +1,7 @@
 package com.spring.store.dao.models;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.List;
 
-@Setter
-@Getter
 public class CategoryModel {
 
     private String id;
@@ -14,4 +9,28 @@ public class CategoryModel {
     private String name;
 
     private List<ProductModel> products;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<ProductModel> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<ProductModel> products) {
+        this.products = products;
+    }
 }

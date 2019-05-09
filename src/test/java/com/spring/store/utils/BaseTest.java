@@ -38,7 +38,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 @ExtendWith({SpringExtension.class})
 @ActiveProfiles("test")
-@RunWith(SpringRunner.class)
 public class BaseTest {
 
     @Autowired
@@ -46,9 +45,6 @@ public class BaseTest {
 
     @Autowired
     protected ObjectMapper objectMapper;
-
-    @Autowired
-    protected BaseDao baseDao;
 
     @Autowired
     @Qualifier("transactionManager")

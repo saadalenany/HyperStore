@@ -9,7 +9,6 @@ import com.spring.store.dao.repos.CategoryRepository;
 import com.spring.store.dao.repos.ProductRepository;
 import com.spring.store.mappers.ProductMapper;
 import com.spring.store.service.api.ProductService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
