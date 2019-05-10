@@ -15,11 +15,11 @@ public class ProductEntity {
     @Column(name = "id")
     private String id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "admin_id")
     private AdminEntity admin;
 
@@ -48,22 +48,6 @@ public class ProductEntity {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public CategoryEntity getCategory() {
-        return category;
-    }
-
-    public void setCategory(CategoryEntity category) {
-        this.category = category;
-    }
-
-    public AdminEntity getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(AdminEntity admin) {
-        this.admin = admin;
     }
 
     public String getName() {
@@ -113,4 +97,21 @@ public class ProductEntity {
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public CategoryEntity getCategory() {
+        return category;
+    }
+
+    public void setCategory(CategoryEntity newCategory) {
+        this.category = newCategory;
+    }
+
+    public AdminEntity getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(AdminEntity newAdmin) {
+        this.admin = newAdmin;
+    }
+
 }

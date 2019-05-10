@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
-@RequestMapping("/Product")
+@RequestMapping("/product")
 public class ProductController {
 
     private final ProductService ProductService;
@@ -36,22 +36,22 @@ public class ProductController {
         return ResponseEntity.ok(ProductService.get(id));
     }
 
-    @GetMapping("/{adminId}")
+    @GetMapping("/by_admin/{adminId}")
     public ResponseEntity<List<ProductModel>> listByAdmin(@PathVariable String adminId) {
         return ResponseEntity.ok(ProductService.listByAdmin(adminId));
     }
 
-    @GetMapping("/{categoryId}")
+    @GetMapping("/by_category/{categoryId}")
     public ResponseEntity<List<ProductModel>> listByCategoryId(@PathVariable String categoryId) {
         return ResponseEntity.ok(ProductService.listByCategory(categoryId));
     }
 
-    @GetMapping("/{creationDate}")
+    @GetMapping("/by_date/{creationDate}")
     public ResponseEntity<List<ProductModel>> listByCreationDate(@PathVariable LocalDateTime creationDate) {
         return ResponseEntity.ok(ProductService.listByDate(creationDate));
     }
 
-    @GetMapping("/lastweek")
+    @GetMapping("/last_week")
     public ResponseEntity<List<ProductModel>> listByLastWeek() {
         return ResponseEntity.ok(ProductService.listByLastWeek(LocalDateTime.now()));
     }

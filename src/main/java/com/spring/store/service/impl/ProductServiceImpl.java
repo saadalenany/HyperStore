@@ -40,6 +40,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductModel save(ProductModel model) {
         ProductEntity productEntity = mapper.toEntity(model);
+        AdminEntity adminEntity = adminRepository.findById(model.getAdminId()).orElseThrow(() -> new RuntimeException(String.format("No Admin found with this id")));
+        CategoryEntity categoryEntity = categoryRepository.findById(model.getCategoryId()).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id")));
+        productEntity.setAdmin(adminEntity);
+        productEntity.setCategory(categoryEntity);
         ProductEntity savedEntity = repository.save(productEntity);
         return mapper.toModel(savedEntity);
     }

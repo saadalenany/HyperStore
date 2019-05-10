@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -31,8 +32,8 @@ public class AdminEntity {
     @Column(name="password")
     private String password;
 
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL)
-    private List<ProductEntity> products;
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> products = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -83,10 +84,15 @@ public class AdminEntity {
     }
 
     public List<ProductEntity> getProducts() {
-        return products;
+        return new ArrayList<>(products);
     }
 
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
+    public void setProducts(List<ProductEntity> newProducts) {
+        this.products.clear();
+        if (newProducts != null) {
+            newProducts.forEach(pro -> pro.setAdmin(this));
+            this.products.addAll(newProducts);
+        }
     }
+
 }

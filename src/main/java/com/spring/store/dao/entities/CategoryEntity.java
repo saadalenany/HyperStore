@@ -3,6 +3,7 @@ package com.spring.store.dao.entities;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,8 +19,8 @@ public class CategoryEntity {
     @Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<ProductEntity> products;
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductEntity> products = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -38,10 +39,15 @@ public class CategoryEntity {
     }
 
     public List<ProductEntity> getProducts() {
-        return products;
+        return new ArrayList<>(products);
     }
 
-    public void setProducts(List<ProductEntity> products) {
-        this.products = products;
+    public void setProducts(List<ProductEntity> newProducts) {
+        this.products.clear();
+        if (newProducts != null) {
+            newProducts.forEach(pro -> pro.setCategory(this));
+            this.products.addAll(newProducts);
+        }
     }
+
 }
