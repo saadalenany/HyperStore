@@ -10,6 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -43,6 +47,34 @@ public class ProductControllerTest extends BaseTest {
             ProductEntity productEntity = repository.findById(productId).orElseGet(() -> fail("Expected ProductEntity not found"));
 
             assertEquals(productId, productEntity.getId(), "Product wasn't created successfully");
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCreateProductModelWithImage() throws Exception {
+
+        AdminModel adminModel = createAdminModel();
+        adminModel = postForObject(adminPath, adminModel, AdminModel.class);
+
+        CategoryModel categoryModel = createCategoryModel();
+        categoryModel = postForObject(categoryPath, categoryModel, CategoryModel.class);
+
+        ProductModel productModel = createProductModel();
+        productModel.setAdminId(adminModel.getId());
+        productModel.setCategoryId(categoryModel.getId());
+        File file = new File("C:\\Users\\salen\\Downloads\\coollogo_com.png");
+        long fileLength = file.length();
+        productModel.setImage(readFileToByteArray(file));
+
+        productModel = postForObject(productPath, productModel, ProductModel.class);
+        final String productId = productModel.getId();
+        runInTransaction(status -> {
+            ProductEntity productEntity = repository.findById(productId).orElseGet(() -> fail("Expected ProductEntity not found"));
+
+            assertEquals(productId, productEntity.getId(), "Product wasn't created successfully");
+            assertEquals(fileLength, productEntity.getImage().length, "Image wasn't created successfully");
             return null;
         });
 
@@ -149,5 +181,27 @@ public class ProductControllerTest extends BaseTest {
         CategoryModel categoryModel = new CategoryModel();
         categoryModel.setName("category1");
         return categoryModel;
+    }
+
+    /**
+     * This method uses java.io.FileInputStream to read
+     * file content into a byte array
+     * @param file
+     * @return
+     */
+    private byte[] readFileToByteArray(File file){
+        FileInputStream fis = null;
+        // Creating a byte array using the length of the file
+        // file.length returns long which is cast to int
+        byte[] bArray = new byte[(int) file.length()];
+        try{
+            fis = new FileInputStream(file);
+            fis.read(bArray);
+            fis.close();
+
+        }catch(IOException ioExp){
+            ioExp.printStackTrace();
+        }
+        return bArray;
     }
 }
