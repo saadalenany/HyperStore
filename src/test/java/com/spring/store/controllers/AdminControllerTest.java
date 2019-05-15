@@ -8,6 +8,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
 
+import java.io.File;
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -29,6 +32,31 @@ public class AdminControllerTest extends BaseTest {
             AdminEntity adminEntity = repository.findById(adminId).orElseGet(() -> fail("Expected AdminEntity not found"));
 
             assertEquals(adminId, adminEntity.getId(), "Admin wasn't created successfully");
+            return null;
+        });
+
+    }
+
+    @Test
+    void testCreateAdminModelWithImage() throws Exception {
+
+        AdminModel adminModel = createAdminModel();
+
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("cool.jpg")).getFile());
+        if (!file.exists()) {
+            throw new RuntimeException("File doesn't exist...");
+        }
+        long fileLength = file.length();
+        adminModel.setImage(readFileToByteArray(file));
+
+        AdminModel responseAdmin = postForObject(path, adminModel, AdminModel.class);
+        final String adminId = responseAdmin.getId();
+        runInTransaction(status -> {
+            AdminEntity adminEntity = repository.findById(adminId).orElseGet(() -> fail("Expected AdminEntity not found"));
+
+            assertEquals(adminId, adminEntity.getId(), "Admin wasn't created successfully");
+            assertEquals(fileLength, adminEntity.getImage().length, "Image wasn't created successfully");
             return null;
         });
 
@@ -65,7 +93,7 @@ public class AdminControllerTest extends BaseTest {
             return null;
         });
 
-        AdminModel retrievedModel = getForObject(path+"/"+adminId, AdminModel.class);
+        AdminModel retrievedModel = getForObject(path + "/" + adminId, AdminModel.class);
         assertEquals(responseAdmin.getId(), retrievedModel.getId(), "Admin wasn't retrieved successfully");
     }
 

@@ -13,6 +13,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -64,7 +65,11 @@ public class ProductControllerTest extends BaseTest {
         ProductModel productModel = createProductModel();
         productModel.setAdminId(adminModel.getId());
         productModel.setCategoryId(categoryModel.getId());
-        File file = new File("C:\\Users\\salen\\Downloads\\coollogo_com.png");
+        ClassLoader classLoader = getClass().getClassLoader();
+        File file = new File(Objects.requireNonNull(classLoader.getResource("cool.jpg")).getFile());
+        if (!file.exists()) {
+            throw new RuntimeException("File doesn't exist...");
+        }
         long fileLength = file.length();
         productModel.setImage(readFileToByteArray(file));
 
@@ -183,25 +188,4 @@ public class ProductControllerTest extends BaseTest {
         return categoryModel;
     }
 
-    /**
-     * This method uses java.io.FileInputStream to read
-     * file content into a byte array
-     * @param file
-     * @return
-     */
-    private byte[] readFileToByteArray(File file){
-        FileInputStream fis = null;
-        // Creating a byte array using the length of the file
-        // file.length returns long which is cast to int
-        byte[] bArray = new byte[(int) file.length()];
-        try{
-            fis = new FileInputStream(file);
-            fis.read(bArray);
-            fis.close();
-
-        }catch(IOException ioExp){
-            ioExp.printStackTrace();
-        }
-        return bArray;
-    }
 }

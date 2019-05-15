@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -243,4 +246,25 @@ public class BaseTest {
                 .getResponse();
     }
 
+    /**
+     * This method uses java.io.FileInputStream to read
+     * file content into a byte array
+     * @param file
+     * @return
+     */
+    protected byte[] readFileToByteArray(File file){
+        FileInputStream fis = null;
+        // Creating a byte array using the length of the file
+        // file.length returns long which is cast to int
+        byte[] bArray = new byte[(int) file.length()];
+        try{
+            fis = new FileInputStream(file);
+            fis.read(bArray);
+            fis.close();
+
+        }catch(IOException ioExp){
+            ioExp.printStackTrace();
+        }
+        return bArray;
+    }
 }

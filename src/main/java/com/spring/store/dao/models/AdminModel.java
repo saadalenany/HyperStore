@@ -13,6 +13,8 @@ public class AdminModel {
 
     private String email;
 
+    private byte[] image;
+
     private LocalDateTime emailVerifiedAt;
 
     private String password;
@@ -49,6 +51,14 @@ public class AdminModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public LocalDateTime getEmailVerifiedAt() {

@@ -26,6 +26,10 @@ public class AdminEntity {
     @Column(name="email")
     private String email;
 
+    @Column(name="image")
+    @Lob
+    private byte[] image;
+
     @Column(name="email_verified_at")
     private LocalDateTime emailVerifiedAt;
 
@@ -65,6 +69,14 @@ public class AdminEntity {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public LocalDateTime getEmailVerifiedAt() {

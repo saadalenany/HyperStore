@@ -28,6 +28,7 @@
 			<column name="email" type="varchar(100)">
 				<constraints nullable="false"/>
 			</column>
+			<column name="image" type="LONGBLOB"/>
 			<column name="email_verified_at" type="datetime(3)"/>
 			<column name="password" type="varchar(255)">
 				<constraints nullable="false"/>
