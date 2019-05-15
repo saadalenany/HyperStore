@@ -51,4 +51,10 @@ public class AdminServiceImpl implements AdminService {
         repository.delete(adminEntity);
         return mapper.toModel(adminEntity);
     }
+
+    @Override
+    public AdminModel getByEmailAndPassword(String email, String password) {
+        AdminEntity byEmailAndPassword = repository.getByEmailAndPassword(email, password);
+        return mapper.toModel(byEmailAndPassword);
+    }
 }
