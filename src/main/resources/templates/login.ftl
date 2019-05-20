@@ -64,6 +64,7 @@
                 text-transform:uppercase;
             }
             .login-html .tab{
+                color: #dddddd;
                 cursor: hand;
                 font-size:22px;
                 margin-right:15px;
@@ -75,9 +76,10 @@
             .login-html .sign-in:checked + .tab,
             .login-html .sign-up:checked + .tab{
                 color:#fff;
-                border-color:#1161ee;
+                border-color:#fff;
             }
             .login-form{
+                outline: none;
                 margin-top:10px;
                 min-height:345px;
                 position:relative;
@@ -90,9 +92,13 @@
             .login-form .group .label,
             .login-form .group .input,
             .login-form .group .button{
+                outline: none;
                 width:100%;
                 color:#fff;
                 display:block;
+            }
+            .login-form .group .input::focus{
+                outline: none;
             }
             .login-form .group .input,
             .login-form .group .button{
@@ -106,7 +112,7 @@
                 -webkit-text-security:circle;
             }
             .login-form .group .label{
-                color:#063372;
+                color:#fff;
                 font-size:12px;
             }
             .login-form .group .button{
@@ -175,6 +181,7 @@
                 color: #fff;
                 text-shadow: 0 1px 0 rgba(0, 0, 0, 0.4);
             }
+
         </style>
     </head>
     <body id="particles-js">
@@ -184,10 +191,10 @@
                 <input id="tab-2" type="radio" name="tab" class="sign-up"><label for="tab-2" class="tab">Sign Up</label>
                 <div class="login-form">
                     <div class="sign-in-htm">
-                        <form action="/checkLogin" method="post">
+                        <form action="/checkLogin" method="post" autocomplete="off">
                             <div class="input-field col s6">
                                 <label for="user" class="label">E-Mail</label>
-                                <input style="color:#fff" id="user" name="email" type="email" class="input" required>
+                                <input autocomplete="fakeusername" style="color:#fff" id="user" name="email" type="email" class="input" required>
                             </div>
                             <div class="input-field col s6">
                                 <label for="pass" class="label">Password</label>
@@ -215,10 +222,6 @@
                             <div class="input-field col s6">
                                 <label for="pass" class="label">Password</label>
                                 <input style="color:#fff" id="pass" name="pass" type="password" class="validate" data-type="password" required>
-                            </div>
-                            <div class="input-field col s6">
-                                <label for="title" class="label">Title</label>
-                                <input style="color:#fff" id="title" name="title" type="text" class="validate" required>
                             </div>
                             <div class="input-field col s6">
                                 <label for="email" class="label">Email Address</label>

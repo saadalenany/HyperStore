@@ -48,7 +48,6 @@ public class LoginController {
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
         String phone = request.getParameter("phone");
-        String title = request.getParameter("title");
 
         String location = request.getParameter("region") + ", " + request.getParameter("place");
         String date = request.getParameter("date");
