@@ -35,6 +35,16 @@ public class AdminController {
         return ResponseEntity.ok(adminService.get(id));
     }
 
+    @GetMapping("/by_email_pass")
+    public ResponseEntity<AdminModel> getByEmailAndPassword(@RequestParam(name = "email") String email, @RequestParam(name = "password") String password) {
+        return ResponseEntity.ok(adminService.getByEmailAndPassword(email, password));
+    }
+
+    @GetMapping("/by_name")
+    public ResponseEntity<AdminModel> getByName(@RequestParam(name = "name") String name) {
+        return ResponseEntity.ok(adminService.getByUsername(name));
+    }
+
     @GetMapping
     public ResponseEntity<List<AdminModel>> list() {
         return ResponseEntity.ok(adminService.list());

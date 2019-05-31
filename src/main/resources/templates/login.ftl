@@ -214,7 +214,7 @@
                         </form>
                     </div>
                     <div class="sign-up-htm">
-                        <form action="/checkSignUp" method="post">
+                        <form action="/checkSignUp" method="post" enctype="multipart/form-data">
                             <div class="input-field col s6">
                                 <label for="name" class="label">Username</label>
                                 <input style="color:#fff" id="name" name="name" type="text" class="validate" required>
@@ -231,6 +231,10 @@
                                 <label for="phone" class="label">Phone</label>
                                 <input style="color:#fff" id="phone" name="phone" type="tel" class="validate" required>
                             </div>
+                            <label for="image" class="label">Profile Image</label>
+                            <div class="input-field col s6">
+                                <input style="color:#fff" id="image" name="image" type="file" required>
+                            </div>
                             <div class="group">
                                 <label class="label">Location</label><br>
                                 <select style="display: block;color:#ffffff;background-color:#ffffff22;border-color:#ffffffaa;" onchange="set_country(this,country,city_state)" size="1" name="region">
@@ -245,9 +249,6 @@
                                 </select>
                                 <input type="hidden" name="region" id="txtregion"></input>
                                 <input type="hidden" name="place" id="txtplacename"></input>
-                            </div>
-                            <div class="input-field col s6">
-                                <input style="color:#fff" id="date" name="date" type="date" class="validate" required>
                             </div>
                             <div class="group">
                                 <input type="submit" class="button" value="Sign Up">

@@ -36,6 +36,9 @@ public class AdminEntity {
     @Column(name="password")
     private String password;
 
+    @Column(name = "address")
+    private String address;
+
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductEntity> products = new ArrayList<>();
 
@@ -93,6 +96,14 @@ public class AdminEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public List<ProductEntity> getProducts() {

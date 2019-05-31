@@ -57,4 +57,10 @@ public class AdminServiceImpl implements AdminService {
         AdminEntity byEmailAndPassword = repository.getByEmailAndPassword(email, password);
         return mapper.toModel(byEmailAndPassword);
     }
+
+    @Override
+    public AdminModel getByUsername(String username) {
+        AdminEntity byName = repository.getByName(username);
+        return mapper.toModel(byName);
+    }
 }

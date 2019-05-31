@@ -1,6 +1,9 @@
 package com.spring.store.dao.models;
 
+import org.apache.tomcat.util.codec.binary.Base64;
+
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 public class ProductModel {
 
@@ -15,6 +18,8 @@ public class ProductModel {
     private Integer price;
 
     private byte[] image;
+
+    private String base64Image;
 
     private LocalDateTime creationDate;
 
@@ -70,6 +75,16 @@ public class ProductModel {
         this.image = image;
     }
 
+    public String getBase64Image() {
+        byte[] imgBytesAsBase64 = Base64.encodeBase64(image);
+        String imgDataAsBase64 = new String(imgBytesAsBase64);
+        return "data:image/png;base64," + imgDataAsBase64;
+    }
+
+    public void setBase64Image(String base64Image) {
+        this.base64Image = base64Image;
+    }
+
     public LocalDateTime getCreationDate() {
         return creationDate;
     }
@@ -92,5 +107,21 @@ public class ProductModel {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductModel{" +
+                "id='" + id + '\'' +
+                ", categoryId='" + categoryId + '\'' +
+                ", adminId='" + adminId + '\'' +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", image=" + Arrays.toString(image) +
+                ", base64Image='" + base64Image + '\'' +
+                ", creationDate=" + creationDate +
+                ", discountPrice=" + discountPrice +
+                ", quantity=" + quantity +
+                '}';
     }
 }

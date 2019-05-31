@@ -13,6 +13,7 @@ public interface ProductMapper {
 
     @Mapping(source = "category.id", target = "categoryId")
     @Mapping(source = "admin.id", target = "adminId")
+    @Mapping(target = "base64Image", ignore = true)
     ProductModel toModel(ProductEntity entity);
 
     List<ProductModel> toModels(List<ProductEntity> entities);

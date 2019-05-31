@@ -15,4 +15,6 @@ public interface AdminService {
     AdminModel delete(String id);
 
     AdminModel getByEmailAndPassword(String email, String password);
+
+    AdminModel getByUsername(String username);
 }

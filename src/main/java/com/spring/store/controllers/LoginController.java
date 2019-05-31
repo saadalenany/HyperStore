@@ -1,22 +1,24 @@
 package com.spring.store.controllers;
 
 import com.spring.store.dao.models.AdminModel;
-import com.spring.store.service.api.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.time.LocalDateTime;
 
 @RestController
 public class LoginController {
 
     @Autowired
-    private AdminService adminService;
+    private AdminController adminController;
 
     @Autowired
     private PagesController pageController;
@@ -27,7 +29,7 @@ public class LoginController {
         String email = request.getParameter("email");
         String pass = request.getParameter("pass");
 
-        AdminModel user = adminService.getByEmailAndPassword(email, pass);
+        AdminModel user = adminController.getByEmailAndPassword(email, pass).getBody();
 
         if (user == null) {
             response.addHeader("location", "/login");
@@ -42,7 +44,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/checkSignUp", method = RequestMethod.POST)
-    public void checkSignUp(HttpServletRequest request, HttpServletResponse response) {
+    public void checkSignUp(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
 
         String name = request.getParameter("name");
         String email = request.getParameter("email");
@@ -50,15 +52,21 @@ public class LoginController {
         String phone = request.getParameter("phone");
 
         String location = request.getParameter("region") + ", " + request.getParameter("place");
-        String date = request.getParameter("date");
 
         AdminModel user = new AdminModel();
         user.setName(name);
         user.setPassword(pass);
         user.setEmail(email);
         user.setPhone(phone);
+        try {
+            user.setImage(image.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        user.setAddress(location);
+        user.setEmailVerifiedAt(LocalDateTime.now());
 
-        user = adminService.save(user);
+        user = adminController.post(user).getBody();
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);

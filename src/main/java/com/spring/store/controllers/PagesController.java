@@ -2,10 +2,13 @@ package com.spring.store.controllers;
 
 import com.spring.store.config.WebConfig;
 import com.spring.store.dao.models.AdminModel;
+import com.spring.store.dao.models.ProductModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,40 +23,66 @@ import java.util.Map;
 @RestController
 public class PagesController {
 
-    @RequestMapping("/")
-    public void autoRedirect(HttpServletRequest request, HttpServletResponse response) {
-        response.addHeader("location", "/login");
-        response.setStatus(301);
-    }
+    @Autowired
+    private AdminController adminController;
 
-    @RequestMapping("/home")
+    @Autowired
+    private ProductController productController;
+
+    @RequestMapping({"/home", "/"})
     public String home(HttpServletRequest request, HttpServletResponse response) {
-        if (request.getSession() == null || request.getSession().getAttribute("user") == null) {
-            response.addHeader("location", "/login");
-            response.setStatus(301);
-            return "";
-        } else {
-            HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
+        HashMap<String, AdminModel> map = new HashMap();
+        if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
-            HashMap<String, Object> map = new HashMap();
             map.put("user", user);
-            response.setStatus(200);
-            return render(map, "index.ftl");
         }
+        response.setStatus(200);
+        return render(map, "index.ftl");
     }
 
-    @RequestMapping("/profile")
-    public String profile(HttpServletRequest request, HttpServletResponse response) {
-        if (request.getSession() == null || request.getSession().getAttribute("user") == null) {
-            response.setStatus(301);
-            return login();
-        } else {
-            HttpSession session = request.getSession();
-            AdminModel user = (AdminModel) session.getAttribute("user");
-            HashMap<String, Object> map = new HashMap();
+    @RequestMapping("/{username}")
+    public String profile(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
+        HashMap<String, Object> map = new HashMap();
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            AdminModel user = (AdminModel) request.getSession().getAttribute("user");
             map.put("user", user);
+            if (!user.getName().equals(username)) {
+                AdminModel visitedUser = adminController.getByName(username).getBody();
+                map.put("visited", visitedUser);
+            }
+            return render(map, "profile.ftl");
+        } else {
+            AdminModel visitedUser = adminController.getByName(username).getBody();
+            map.put("visited", visitedUser);
             return render(map, "profile.ftl");
         }
+    }
+
+    @RequestMapping("/products")
+    public String products(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        HashMap<String, AdminModel> map = new HashMap();
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            map.put("user", user);
+        }
+        response.setStatus(200);
+        return render(map, "products.ftl");
+    }
+
+    @RequestMapping("/by_product/{product_id}")
+    public String product(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        HashMap<String, Object> map = new HashMap();
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            map.put("user", user);
+        }
+        ProductModel productModel = productController.get(product_id).getBody();
+        map.put("product", productModel);
+        response.setStatus(200);
+        return render(map, "product.ftl");
     }
 
     @RequestMapping("/login")

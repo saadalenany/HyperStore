@@ -11,4 +11,5 @@ public interface AdminRepository extends JpaRepository<AdminEntity,String> {
     @Query("SELECT a FROM AdminEntity a WHERE a.email = ?1 AND a.password = ?2")
     AdminEntity getByEmailAndPassword(String email, String password);
 
+    AdminEntity getByName(String name);
 }

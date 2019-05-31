@@ -33,4 +33,13 @@ public class CategoryModel {
     public void setProducts(List<ProductModel> products) {
         this.products = products;
     }
+
+    @Override
+    public String toString() {
+        return "CategoryModel{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", products=" + products +
+                '}';
+    }
 }
