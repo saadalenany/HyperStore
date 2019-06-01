@@ -35,60 +35,8 @@
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto'>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
-
-    <style>
-        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-        body {
-          font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .flip-card {
-          background-color: transparent;
-          width: 400px;
-          height: 400px;
-          perspective: 1000px;
-        }
-
-        .flip-card-inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          text-align: center;
-          transition: transform 0.6s;
-          transform-style: preserve-3d;
-          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        }
-
-        .flip-card:hover .flip-card-inner {
-          transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-        }
-
-        .flip-card-front {
-          background-color: #bbb;
-          color: black;
-        }
-
-        .flip-card-back {
-          background-color: #2980b9;
-          color: white;
-          transform: rotateY(180deg);
-        }
-
-    </style>
-
+    <script src="js/jquery.min.js"></script>
+    <script src="js/slick.min.js"></script>
 </head>
 
 <body>
@@ -100,8 +48,8 @@
 				<div class="pull-left">
 					<!-- Logo -->
 					<div class="header-logo">
-						<a class="logo" href="#">
-							<img src="./img/logo.png" alt="">
+						<a class="logo" href="/home">
+							<img src="./img/logo.png" alt="E-Shop">
 						</a>
 					</div>
 					<!-- /Logo -->
@@ -110,6 +58,12 @@
 					<div class="header-search">
 						<form>
 							<input class="input search-input" type="text" placeholder="Enter your keyword">
+							<select class="input search-categories">
+								<option value="0">All Categories</option>
+                                <#list categories as cat>
+    								<option value="${cat.getId()}">${cat.getName()}</option>
+                                </#list>
+							</select>
 							<button class="search-btn"><i class="fa fa-search"></i></button>
 						</form>
 					</div>
@@ -120,15 +74,19 @@
 						<!-- Account -->
 						<li class="header-account dropdown default-dropdown">
 							<#if user??>
-                                <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
-                                    <a href="/${user.getName()}"><img src="${user.getBase64Image()}" width="40px" height="40px"/></a>
-                                    <strong class="text-uppercase">${user.getName()}</strong>
-                                </div>
+                                <a href="/${user.getName()}">
+                                    <div>
+                                        <img src="${user.getBase64Image()}" width="40px" height="40px"/>
+                                        <strong class="text-uppercase">${user.getName()}</strong>
+                                    </div>
+                                </a>
                             <#else>
-                                <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
-                                    <div class="header-btns-icon" width="40px" height="40px"/>
-                                </div>
-    							<a href="/login">Join</a>
+    							<a href="/login">
+                                    <div class="header-btns-icon">
+                                        <i class="fa fa-user-o"></i>
+                                    </div>
+                                    <strong class="text-uppercase">Join</strong>
+    							</a>
                             </#if>
 						</li>
 						<!-- /Account -->
@@ -138,11 +96,11 @@
 							<a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
 								<div class="header-btns-icon">
 									<i class="fa fa-shopping-cart"></i>
-									<span class="qty">3</span>
+									<!--<span class="qty">3</span>-->
 								</div>
 								<strong class="text-uppercase">My Cart:</strong>
 								<br>
-								<span>35.20$</span>
+								<span>0.0$</span>
 							</a>
 							<div class="custom-menu">
 								<div id="shopping-cart">
@@ -190,4 +148,36 @@
 		<!-- container -->
 	</header>
 	<!-- /HEADER -->
-	<br>
+
+	<!-- NAVIGATION -->
+	<div id="navigation">
+		<!-- container -->
+		<div class="container">
+			<div id="responsive-nav">
+
+				<!-- category nav -->
+				<div class="category-nav show-on-click">
+					<span class="category-header">Categories <i class="fa fa-list"></i></span>
+					<ul class="category-list">
+                        <#list categories as cat>
+                            <li><a href="/categories/${cat.getId()}">${cat.getName()}</a></li>
+                        </#list>
+					</ul>
+				</div>
+				<!-- /category nav -->
+
+				<!-- menu nav -->
+				<div class="menu-nav">
+					<span class="menu-header">Menu <i class="fa fa-bars"></i></span>
+					<ul class="menu-list">
+						<li><a href="/home">Home</a></li>
+						<li><a href="/categories">Categories</a></li>
+						<li><a href="/products">Shop</a></li>
+					</ul>
+				</div>
+				<!-- menu nav -->
+			</div>
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /NAVIGATION -->

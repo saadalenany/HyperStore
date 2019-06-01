@@ -10,7 +10,6 @@ import com.spring.store.dao.repos.ProductRepository;
 import com.spring.store.mappers.ProductMapper;
 import com.spring.store.service.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,29 +54,41 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductModel> listByAdmin(String adminId) {
+    public List<ProductModel> findByAdmin(String adminId) {
         AdminEntity adminEntity = adminRepository.findById(adminId).orElseThrow(() -> new RuntimeException(String.format("No Admin found with this id %s",adminId)));
         List<ProductEntity> productEntities = repository.getProductsByAdmin(adminEntity);
         return mapper.toModels(productEntities);
     }
 
     @Override
-    public List<ProductModel> listByCategory(String categoryId) {
+    public List<ProductModel> findByCategory(String categoryId) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s",categoryId)));
         List<ProductEntity> productEntities = repository.getProductsByCategory(categoryEntity);
         return mapper.toModels(productEntities);
     }
 
     @Override
-    public List<ProductModel> listByDate(LocalDateTime creationDate) {
+    public List<ProductModel> findByDate(LocalDateTime creationDate) {
         List<ProductEntity> productsFromSpecificDate = repository.getProductsFromSpecificDate(creationDate);
         return mapper.toModels(productsFromSpecificDate);
     }
 
     @Override
-    public List<ProductModel> listByLastWeek(LocalDateTime creationDate) {
+    public List<ProductModel> findByLastWeek(LocalDateTime creationDate) {
         List<ProductEntity> productsFromLast7Days = repository.getProductsFromLast7Days(creationDate.minusDays(7));
         return mapper.toModels(productsFromLast7Days);
+    }
+
+    @Override
+    public List<ProductModel> findByRate(Integer rate) {
+        List<ProductEntity> byRate = repository.getByRate(rate);
+        return mapper.toModels(byRate);
+    }
+
+    @Override
+    public List<ProductModel> findByDiscount(Integer discount) {
+        List<ProductEntity> byDiscount = repository.getByDiscount(discount);
+        return mapper.toModels(byDiscount);
     }
 
     @Override

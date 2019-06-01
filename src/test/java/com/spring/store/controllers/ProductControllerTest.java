@@ -6,13 +6,12 @@ import com.spring.store.dao.models.CategoryModel;
 import com.spring.store.dao.models.ProductModel;
 import com.spring.store.dao.repos.ProductRepository;
 import com.spring.store.utils.BaseTest;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -174,10 +173,11 @@ public class ProductControllerTest extends BaseTest {
     }
 
     private AdminModel createAdminModel() {
+        String randomizedStr = RandomStringUtils.randomAlphabetic(10);
         AdminModel adminModel = new AdminModel();
-        adminModel.setName("admin1");
+        adminModel.setName(randomizedStr);
         adminModel.setPhone("+2012315455785");
-        adminModel.setEmail("admin1@yahoo.com");
+        adminModel.setEmail(randomizedStr + "@yahoo.com");
         adminModel.setPassword("hygtrfyedtwr");
         return adminModel;
     }

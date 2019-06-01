@@ -38,22 +38,32 @@ public class ProductController {
 
     @GetMapping("/by_admin/{adminId}")
     public ResponseEntity<List<ProductModel>> listByAdmin(@PathVariable String adminId) {
-        return ResponseEntity.ok(ProductService.listByAdmin(adminId));
+        return ResponseEntity.ok(ProductService.findByAdmin(adminId));
     }
 
     @GetMapping("/by_category/{categoryId}")
     public ResponseEntity<List<ProductModel>> listByCategoryId(@PathVariable String categoryId) {
-        return ResponseEntity.ok(ProductService.listByCategory(categoryId));
+        return ResponseEntity.ok(ProductService.findByCategory(categoryId));
     }
 
     @GetMapping("/by_date/{creationDate}")
     public ResponseEntity<List<ProductModel>> listByCreationDate(@PathVariable LocalDateTime creationDate) {
-        return ResponseEntity.ok(ProductService.listByDate(creationDate));
+        return ResponseEntity.ok(ProductService.findByDate(creationDate));
+    }
+
+    @GetMapping("/by_rate/{rate}")
+    public ResponseEntity<List<ProductModel>> listByRate(@PathVariable Integer rate) {
+        return ResponseEntity.ok(ProductService.findByRate(rate));
+    }
+
+    @GetMapping("/by_discount/{discount}")
+    public ResponseEntity<List<ProductModel>> listByDiscount(@PathVariable Integer discount) {
+        return ResponseEntity.ok(ProductService.findByDiscount(discount));
     }
 
     @GetMapping("/last_week")
     public ResponseEntity<List<ProductModel>> listByLastWeek() {
-        return ResponseEntity.ok(ProductService.listByLastWeek(LocalDateTime.now()));
+        return ResponseEntity.ok(ProductService.findByLastWeek(LocalDateTime.now()));
     }
 
     @DeleteMapping("/{id}")

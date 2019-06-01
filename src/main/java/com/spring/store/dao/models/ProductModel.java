@@ -27,6 +27,8 @@ public class ProductModel {
 
     private Integer quantity;
 
+    private Integer rate;
+
     public String getId() {
         return id;
     }
@@ -76,9 +78,12 @@ public class ProductModel {
     }
 
     public String getBase64Image() {
-        byte[] imgBytesAsBase64 = Base64.encodeBase64(image);
-        String imgDataAsBase64 = new String(imgBytesAsBase64);
-        return "data:image/png;base64," + imgDataAsBase64;
+        if (image != null) {
+            byte[] imgBytesAsBase64 = Base64.encodeBase64(image);
+            String imgDataAsBase64 = new String(imgBytesAsBase64);
+            return "data:image/png;base64," + imgDataAsBase64;
+        }
+        return null;
     }
 
     public void setBase64Image(String base64Image) {
@@ -109,6 +114,14 @@ public class ProductModel {
         this.quantity = quantity;
     }
 
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
+
     @Override
     public String toString() {
         return "ProductModel{" +
@@ -122,6 +135,7 @@ public class ProductModel {
                 ", creationDate=" + creationDate +
                 ", discountPrice=" + discountPrice +
                 ", quantity=" + quantity +
+                ", rate=" + rate +
                 '}';
     }
 }

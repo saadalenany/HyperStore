@@ -4,6 +4,7 @@ import com.spring.store.dao.entities.AdminEntity;
 import com.spring.store.dao.models.AdminModel;
 import com.spring.store.dao.repos.AdminRepository;
 import com.spring.store.utils.BaseTest;
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -75,9 +76,10 @@ public class AdminControllerTest extends BaseTest {
             return null;
         });
 
-        responseAdmin.setName("test_name");
+        String updateName = RandomStringUtils.randomAlphabetic(10);
+        responseAdmin.setName(updateName);
         responseAdmin = putForObject(path, responseAdmin, AdminModel.class);
-        assertEquals("test_name", responseAdmin.getName(), "Name wasn't updated successfully");
+        assertEquals(updateName, responseAdmin.getName(), "Name wasn't updated successfully");
     }
 
     @Test
@@ -115,10 +117,11 @@ public class AdminControllerTest extends BaseTest {
     }
 
     private AdminModel createAdminModel() {
+        String randomizedStr = RandomStringUtils.randomAlphabetic(10);
         AdminModel adminModel = new AdminModel();
-        adminModel.setName("admin1");
+        adminModel.setName(randomizedStr);
         adminModel.setPhone("+2012315455785");
-        adminModel.setEmail("admin1@yahoo.com");
+        adminModel.setEmail(randomizedStr + "@yahoo.com");
         adminModel.setPassword("hygtrfyedtwr");
         return adminModel;
     }

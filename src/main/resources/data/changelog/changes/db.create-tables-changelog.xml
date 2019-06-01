@@ -24,7 +24,7 @@
 				<constraints nullable="false"/>
 			</column>
 			<column name="email" type="varchar(100)">
-				<constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
 			</column>
 			<column name="image" type="LONGBLOB"/>
 			<column name="email_verified_at" type="datetime(3)"/>
@@ -87,6 +87,7 @@
 			<column name="creation_date" type="datetime(3)"/>
 			<column name="discount_price" type="int(10)" defaultValue="0"/>
 			<column name="quantity" type="int(10)" defaultValue="0"/>
+            <column name="rate" type="int(10)" defaultValue="0"/>
 		</createTable>
 	</changeSet>
 </databaseChangeLog>

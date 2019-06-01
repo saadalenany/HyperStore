@@ -23,4 +23,10 @@ public interface ProductRepository extends JpaRepository<ProductEntity,String> {
 
     List<ProductEntity> getProductsByCategory(CategoryEntity category);
 
+    @Query("SELECT p FROM ProductEntity p WHERE p.rate >= ?1")
+    List<ProductEntity> getByRate(Integer rate);
+
+    @Query("SELECT p FROM ProductEntity p WHERE p.discountPrice >= ?1")
+    List<ProductEntity> getByDiscount(Integer discountPrice);
+
 }

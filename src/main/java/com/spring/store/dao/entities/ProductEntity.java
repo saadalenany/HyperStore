@@ -42,6 +42,9 @@ public class ProductEntity {
     @Column(name="quantity")
     private Integer quantity;
 
+    @Column(name = "rate")
+    private Integer rate;
+
     public String getId() {
         return id;
     }
@@ -114,4 +117,11 @@ public class ProductEntity {
         this.admin = newAdmin;
     }
 
+    public Integer getRate() {
+        return rate;
+    }
+
+    public void setRate(Integer rate) {
+        this.rate = rate;
+    }
 }

@@ -2,6 +2,7 @@ package com.spring.store.controllers;
 
 import com.spring.store.config.WebConfig;
 import com.spring.store.dao.models.AdminModel;
+import com.spring.store.dao.models.CategoryModel;
 import com.spring.store.dao.models.ProductModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -29,14 +31,32 @@ public class PagesController {
     @Autowired
     private ProductController productController;
 
+    @Autowired
+    private CategoryController categoryController;
+
     @RequestMapping({"/home", "/"})
     public String home(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        HashMap<String, AdminModel> map = new HashMap();
+        HashMap<String, Object> map = new HashMap();
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
             map.put("user", user);
         }
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
+
+        //TODO Products from the last 7 days
+        List<ProductModel> latestProducts = productController.listByLastWeek().getBody();
+        map.put("latestProducts", latestProducts);
+
+        //TODO Products with Discount of 10% or higher
+        List<ProductModel> discountedProducts = productController.listByDiscount(10).getBody();
+        map.put("discountedProducts", discountedProducts);
+
+        //TODO Products with rate 4 or above
+        List<ProductModel> recommendedProducts = productController.listByRate(4).getBody();
+        map.put("recommendedProducts", recommendedProducts);
+
         response.setStatus(200);
         return render(map, "index.ftl");
     }
@@ -44,6 +64,8 @@ public class PagesController {
     @RequestMapping("/{username}")
     public String profile(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             AdminModel user = (AdminModel) request.getSession().getAttribute("user");
             map.put("user", user);
@@ -62,7 +84,9 @@ public class PagesController {
     @RequestMapping("/products")
     public String products(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        HashMap<String, AdminModel> map = new HashMap();
+        HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
             map.put("user", user);
@@ -75,6 +99,8 @@ public class PagesController {
     public String product(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
             map.put("user", user);

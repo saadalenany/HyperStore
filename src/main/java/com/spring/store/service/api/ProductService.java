@@ -11,13 +11,17 @@ public interface ProductService {
 
     ProductModel get(String id);
 
-    List<ProductModel> listByAdmin(String adminId);
+    List<ProductModel> findByAdmin(String adminId);
 
-    List<ProductModel> listByCategory(String category_id);
+    List<ProductModel> findByCategory(String category_id);
 
-    List<ProductModel> listByDate(LocalDateTime creationDate);
+    List<ProductModel> findByDate(LocalDateTime creationDate);
 
-    List<ProductModel> listByLastWeek(LocalDateTime creationDate);
+    List<ProductModel> findByLastWeek(LocalDateTime creationDate);
+
+    List<ProductModel> findByRate(Integer rate);
+
+    List<ProductModel> findByDiscount(Integer discount);
 
     ProductModel delete(String id);
 
