@@ -6,8 +6,9 @@
         <link rel="stylesheet" href="css/materialize.css">
         <link rel="stylesheet" href="css/w3.css">
         <style>
-            body{
-                font-family: "Comic Sans MS", cursive, sans-serif;
+            html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
+            body {
+                font-family: Arial, Helvetica, sans-serif;
                 display: -webkit-flex; /* Safari */
                 -webkit-flex-wrap: wrap; /* Safari 6.1+ */
                 display: flex;

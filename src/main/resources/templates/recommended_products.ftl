@@ -23,11 +23,11 @@
                             <div class="product-label">
                                 <span>Rated</span>
                             </div>
-                            <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> Quick view</button>
-                            <img src="${product.getBase64Image()}" alt="${product.getName()} Image">
+                            <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> <a href="/by_product/${product.getId()}">Quick view</a></button>
+                            <img src="${product.getBase64Image()}" alt="${product.getName()} Image" width="300" height="300">
                         </div>
                         <div class="product-body">
-                            <h3 class="product-price">${product.getPrice()} $</h3>
+                            <h3 class="product-price">$${product.getPrice()}</h3>
                             <div class="product-rating">
                                 <#list 1..product.getRate() as i>
                                     <i class="fa fa-star"></i>
