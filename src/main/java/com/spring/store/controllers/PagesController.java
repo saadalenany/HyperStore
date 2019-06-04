@@ -75,10 +75,27 @@ public class PagesController {
         } else {
             AdminModel visitedUser = adminController.getByName(username).getBody();
             if (visitedUser == null) {
-                return blank();
+                return blank(new HashMap());
             }
             map.put("visited", visitedUser);
             return render(map, "profile.ftl");
+        }
+    }
+
+    @RequestMapping("/profile/{username}/settings")
+    public String settings(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
+        HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            AdminModel user = (AdminModel) request.getSession().getAttribute("user");
+            map.put("user", user);
+            if (!user.getName().equals(username)) {
+                return blank(map);
+            }
+            return render(map, "settings.ftl");
+        } else {
+            return blank(new HashMap());
         }
     }
 
@@ -170,14 +187,15 @@ public class PagesController {
     }
 
     @RequestMapping("/login")
-    public String login() {
+    public String login(HttpServletRequest request, HttpServletResponse response) {
+        request.getSession().invalidate();
         return render(new HashMap(), "login.ftl");
     }
 
     @RequestMapping("/404")
     @ExceptionHandler(Throwable.class)
-    public String blank() {
-        return render(new HashMap(), "blank.ftl");
+    public String blank(Map map) {
+        return render(map, "blank.ftl");
     }
 
     public String render(Map map, String filename) {

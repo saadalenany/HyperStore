@@ -11,9 +11,9 @@
 					<div class="footer">
 						<!-- footer logo -->
 						<div class="footer-logo">
-							<a class="logo" href="#">
-		            <img src="/img/logo.png" alt="">
-		          </a>
+                            <a class="logo" href="#">
+                                <img src="/img/logo.png" alt="">
+                            </a>
 						</div>
 						<!-- /footer logo -->
 
@@ -35,13 +35,18 @@
 					<div class="footer">
 						<h3 class="footer-header">My Account</h3>
 						<ul class="list-links">
-						    <#if admin??>
-    							<li><a href="/profile/${admin.getId()}">My Account</a></li>
+						    <#if user??>
+    							<li><a href="/profile/${user.getName()}">My Account</a></li>
+    							<li><a href="/profile/${user.getName()}/settings">Settings</a></li>
                             </#if>
 							<li><a href="#">My Wishlist</a></li>
 							<li><a href="#">Compare</a></li>
 							<li><a href="#">Checkout</a></li>
-							<li><a href="/login">Login</a></li>
+						    <#if user??>
+    							<li><a href="/login">Logout</a></li>
+                            <#else>
+    							<li><a href="/login">Login</a></li>
+                            </#if>
 						</ul>
 					</div>
 				</div>
