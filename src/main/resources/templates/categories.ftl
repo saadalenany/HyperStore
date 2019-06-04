@@ -5,7 +5,8 @@
 		<div class="container">
 			<ul class="breadcrumb">
 				<li><a href="/home">Home</a></li>
-				<li class="active">Products</li>
+				<li><a href="/categories/${category.getId()}?page=1">Categories</a></li>
+				<li class="active">${category.getName()}</li>
 			</ul>
 		</div>
 	</div>
@@ -15,12 +16,34 @@
 	<div class="section">
 		<!-- container -->
 		<div class="container">
-
 			<!-- row -->
 			<div class="row">
 
+				<!-- ASIDE -->
+				<div id="aside" class="col-md-2">
+                    <ul class="nav flex-column" role="tablist">
+                        <#if categories??>
+                            <#assign x=0>
+                            <#list categories as cat>
+                                <#if x==0 >
+                                    <li class="nav-item">
+                                        <a class="nav-link active" href="/categories/${cat.getId()}?page=1">${cat.getName()}</a>
+                                    </li>
+                                <#else>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/categories/${cat.getId()}?page=1">${cat.getName()}</a>
+                                    </li>
+                                </#if>
+                                <#assign x++>
+                            </#list>
+                        </#if>
+                    </ul>
+				</div>
+				<!-- /ASIDE -->
+
 				<!-- MAIN -->
-				<div id="main" class="col-md-13">
+				<div id="main" class="col-md-10">
+
 					<!-- store top filter -->
 					<div class="store-filter clearfix">
 						<div class="pull-right">
@@ -28,13 +51,13 @@
                                 <#if page == 1>
                                     <li class="prev disabled"> ← Previous</li>
                                 <#else>
-                                    <li class="prev"><a href="/products?page=${page-1}">← Previous</a></li>
+                                    <li class="prev"><a href="/categories/${category.getId()}?page=${page-1}">← Previous</a></li>
                                 </#if>
                                 <li class="active"><a href="#">${page}</a></li>
                                 <#if page gte size>
                                     <li class="next disabled">Next → </li>
                                 <#else>
-                                    <li class="next"><a href="/products?page=${page+1}">Next → </a></li>
+                                    <li class="next"><a href="/categories/${category.getId()}?page=${page+1}">Next → </a></li>
                                 </#if>
 							</ul>
 						</div>
@@ -93,18 +116,19 @@
                                 <#if page == 1>
                                     <li class="prev disabled"> ← Previous</li>
                                 <#else>
-                                    <li class="prev"><a href="/products?page=${page-1}">← Previous</a></li>
+                                    <li class="prev"><a href="/categories/${category.getId()}?page=${page-1}">← Previous</a></li>
                                 </#if>
                                 <li class="active"><a href="#">${page}</a></li>
                                 <#if page gte size>
                                     <li class="next disabled">Next → </li>
                                 <#else>
-                                    <li class="next"><a href="/products?page=${page+1}">Next → </a></li>
+                                    <li class="next"><a href="/categories/${category.getId()}?page=${page+1}">Next → </a></li>
                                 </#if>
 							</ul>
 						</div>
 					</div>
 					<!-- /store bottom filter -->
+
 				</div>
 				<!-- /MAIN -->
 			</div>

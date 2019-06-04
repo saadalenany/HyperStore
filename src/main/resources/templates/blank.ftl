@@ -5,7 +5,7 @@
 		<div class="container">
 			<ul class="breadcrumb">
 				<li><a href="/home">Home</a></li>
-				<li class="active">Blank</li>
+				<li class="active">Not Found</li>
 			</ul>
 		</div>
 	</div>

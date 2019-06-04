@@ -7,26 +7,26 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>Store</title>
+	<title>E-Shop</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
 
 	<!-- Bootstrap -->
-	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
 
 	<!-- Slick -->
-	<link type="text/css" rel="stylesheet" href="css/slick.css" />
-	<link type="text/css" rel="stylesheet" href="css/slick-theme.css" />
+	<link type="text/css" rel="stylesheet" href="/css/slick.css" />
+	<link type="text/css" rel="stylesheet" href="/css/slick-theme.css" />
 
 	<!-- nouislider -->
-	<link type="text/css" rel="stylesheet" href="css/nouislider.min.css" />
+	<link type="text/css" rel="stylesheet" href="/css/nouislider.min.css" />
 
 	<!-- Font Awesome Icon -->
-	<link rel="stylesheet" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/font-awesome.min.css">
 
 	<!-- Custom stlylesheet -->
-	<link type="text/css" rel="stylesheet" href="css/style.css" />
+	<link type="text/css" rel="stylesheet" href="/css/style.css" />
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -35,11 +35,7 @@
 		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/slick.min.js"></script>
-
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
 
     <style>
         html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
@@ -99,7 +95,7 @@
 					<!-- Logo -->
 					<div class="header-logo">
 						<a class="logo" href="/home">
-							<img src="./img/logo.png" alt="E-Shop">
+							<img src="/img/logo.png" alt="E-Shop">
 						</a>
 					</div>
 					<!-- /Logo -->
@@ -110,9 +106,11 @@
 							<input class="input search-input" type="text" placeholder="Enter your keyword">
 							<select class="input search-categories">
 								<option value="0">All Categories</option>
-                                <#list categories as cat>
-    								<option value="${cat.getId()}">${cat.getName()}</option>
-                                </#list>
+								<#if categories??>
+                                    <#list categories as cat>
+                                        <option value="${cat.getId()}">${cat.getName()}</option>
+                                    </#list>
+                                </#if>
 							</select>
 							<button class="search-btn"><i class="fa fa-search"></i></button>
 						</form>
@@ -124,7 +122,7 @@
 						<!-- Account -->
 						<li class="header-account dropdown default-dropdown">
 							<#if user??>
-                                <a href="/${user.getName()}">
+                                <a href="/profile/${user.getName()}">
                                     <div>
                                         <img src="${user.getBase64Image()}" width="40px" height="40px"/>
                                         <strong class="text-uppercase">${user.getName()}</strong>
@@ -209,9 +207,11 @@
 				<div class="category-nav show-on-click">
 					<span class="category-header">Categories <i class="fa fa-list"></i></span>
 					<ul class="category-list">
-                        <#list categories as cat>
-                            <li><a href="/categories/${cat.getId()}">${cat.getName()}</a></li>
-                        </#list>
+                        <#if categories??>
+                            <#list categories as cat>
+                                <li><a href="/categories/${cat.getId()}">${cat.getName()}</a></li>
+                            </#list>
+                        </#if>
 					</ul>
 				</div>
 				<!-- /category nav -->
@@ -222,7 +222,7 @@
 					<ul class="menu-list">
 						<li><a href="/home">Home</a></li>
 						<li><a href="/categories">Categories</a></li>
-						<li><a href="/products">Shop</a></li>
+						<li><a href="/products?page=1">Shop</a></li>
 					</ul>
 				</div>
 				<!-- menu nav -->

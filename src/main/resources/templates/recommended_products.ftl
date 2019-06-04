@@ -12,7 +12,7 @@
     <!-- /section-title -->
 
     <!-- Product Slick -->
-    <div class="col-md-9 col-sm-6 col-xs-6">
+    <div class="col-md-12 col-sm-3 col-xs-6">
         <div class="row">
             <div id="product-slick-1" class="product-slick">
 

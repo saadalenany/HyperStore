@@ -10,7 +10,7 @@
 
     <#list latestProducts as product>
         <!-- Product Single -->
-        <div class="col-md-3 col-sm-6 col-xs-6">
+        <div class="col-md-4 col-sm-6 col-xs-6">
             <div class="product product-single">
                 <div class="product-thumb">
                     <div class="product-label">

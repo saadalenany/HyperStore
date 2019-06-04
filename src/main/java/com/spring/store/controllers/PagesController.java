@@ -8,10 +8,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +18,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class PagesController {
@@ -61,7 +59,7 @@ public class PagesController {
         return render(map, "index.ftl");
     }
 
-    @RequestMapping("/{username}")
+    @RequestMapping("/profile/{username}")
     public String profile(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
@@ -76,21 +74,38 @@ public class PagesController {
             return render(map, "profile.ftl");
         } else {
             AdminModel visitedUser = adminController.getByName(username).getBody();
+            if (visitedUser == null) {
+                return blank();
+            }
             map.put("visited", visitedUser);
             return render(map, "profile.ftl");
         }
     }
 
     @RequestMapping("/products")
-    public String products(HttpServletRequest request, HttpServletResponse response) {
+    public String products(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                           HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
-        map.put("categories", categories);
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
             map.put("user", user);
         }
+
+        List<ProductModel> products = productController.listAsPage(page - 1, 9).getBody();
+
+        double sizeInt = Objects.requireNonNull(productController.list().getBody()).size();
+        double size = Math.ceil(sizeInt / 9.0);
+
+        if (page <= 0 || page > size) {
+            page = 1;
+        }
+
+        map.put("products", products);
+        map.put("categories", categories);
+        map.put("page", page);
+        map.put("size", size);
         response.setStatus(200);
         return render(map, "products.ftl");
     }
@@ -106,9 +121,52 @@ public class PagesController {
             map.put("user", user);
         }
         ProductModel productModel = productController.get(product_id).getBody();
+        CategoryModel categoryModel = categoryController.get(productModel.getCategoryId()).getBody();
+        AdminModel adminModel = adminController.get(productModel.getAdminId()).getBody();
+        //TODO Products with rate 4 or above
+        List<ProductModel> recommendedProducts = productController.listByRateAsPage(4, 0, 4, product_id).getBody();
+
         map.put("product", productModel);
+        map.put("category", categoryModel);
+        map.put("admin", adminModel);
+        map.put("recommendedProducts", recommendedProducts);
         response.setStatus(200);
         return render(map, "product.ftl");
+    }
+
+    @RequestMapping({"/categories", "/categories/{catId}"})
+    public String categories(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                             @PathVariable(required = false, name = "catId") String catId,
+                             HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            map.put("user", user);
+        }
+
+        if (catId == null) {
+            assert categories != null;
+            catId = categories.get(0).getId();
+        }
+        List<ProductModel> products = productController.listByCategoryAsPage(catId, page - 1, 9).getBody();
+        CategoryModel categoryModel = categoryController.get(catId).getBody();
+
+        double sizeInt = Objects.requireNonNull(productController.listByCategory(catId).getBody()).size();
+        double size = Math.ceil(sizeInt / 9.0);
+
+        if (page <= 0 || page > size) {
+            page = 1;
+        }
+
+        map.put("products", products);
+        map.put("categories", categories);
+        map.put("category", categoryModel);
+        map.put("page", page);
+        map.put("size", size);
+        response.setStatus(200);
+        return render(map, "categories.ftl");
     }
 
     @RequestMapping("/login")

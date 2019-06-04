@@ -10,6 +10,8 @@ import com.spring.store.dao.repos.ProductRepository;
 import com.spring.store.mappers.ProductMapper;
 import com.spring.store.service.api.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,8 +64,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductModel> findByCategory(String categoryId) {
+        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s", categoryId)));
+        List<ProductEntity> productEntities = repository.findByCategory(categoryEntity);
+        return mapper.toModels(productEntities);
+    }
+
+    @Override
+    public List<ProductModel> findByCategoryAsPage(String categoryId, Integer page, Integer size) {
         CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s",categoryId)));
-        List<ProductEntity> productEntities = repository.getProductsByCategory(categoryEntity);
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<ProductEntity> productEntities = repository.findByCategory(categoryEntity, pageWithElements);
         return mapper.toModels(productEntities);
     }
 
@@ -92,9 +102,47 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductModel> findByPriceBetweenAsPage(Integer low, Integer high, Integer page, Integer size) {
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<ProductEntity> byPriceBetween = repository.getByPriceBetweenAsPage(low, high, pageWithElements);
+        return mapper.toModels(byPriceBetween);
+    }
+
+    @Override
+    public List<ProductModel> findByPriceBetween(Integer low, Integer high) {
+        List<ProductEntity> byPriceBetween = repository.getByPriceBetween(low, high);
+        return mapper.toModels(byPriceBetween);
+    }
+
+    @Override
     public ProductModel delete(String id) {
         ProductEntity productEntity = repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No Product found with this id %s",id)));
         repository.delete(productEntity);
         return mapper.toModel(productEntity);
+    }
+
+    @Override
+    public Integer getProductCount() {
+        return repository.getProductCount();
+    }
+
+    @Override
+    public List<ProductModel> findAll() {
+        List<ProductEntity> all = repository.findAll();
+        return mapper.toModels(all);
+    }
+
+    @Override
+    public List<ProductModel> findAllAsPage(Integer page, Integer size) {
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<ProductEntity> asPage = repository.findAll(pageWithElements).getContent();
+        return mapper.toModels(asPage);
+    }
+
+    @Override
+    public List<ProductModel> findByRateAsPage(Integer rate, Integer page, Integer size, String exceptProduct) {
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<ProductEntity> asPage = repository.getByRateAsPage(rate, exceptProduct, pageWithElements);
+        return mapper.toModels(asPage);
     }
 }

@@ -17,7 +17,6 @@
                       </div>
                       <div class="flip-card-back">
                         <h1>${visited.getName()}</h1>
-                        <button type="button" class="btn btn-default">Change Image</button>
                       </div>
                     </div>
                   </div>
@@ -61,89 +60,54 @@
             <!-- row -->
             <div class="row">
         <#assign x=0>
+        <#assign products=0>
         <#if visited??>
-            <#list visited.getProducts() as product>
-                <#if x%3=0>
-                    </div>
-                    <!-- /row -->
-                    <!-- row -->
-                    <div class="row">
-                </#if>
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> <a href="/by_product/${product.getId()}">Quick view</a></button>
-                                <img src="${product.getBase64Image()}" alt="${product.getName()} Image" width="300" height="300">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$${product.getPrice()}</h3>
-                                <div class="product-rating">
-                                    <#list 1..product.getRate() as i>
-                                        <i class="fa fa-star"></i>
-                                    </#list>
-                                    <#if product.getRate() != 5>
-                                        <#list 1..5-product.getRate() as i>
-                                            <i class="fa fa-star-o empty"></i>
-                                        </#list>
-                                    </#if>
-                                </div>
-                                <h2 class="product-name"><a href="#">${product.getName()}</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /Product Single -->
-                <#assign x++>
-            </#list>
+            <#assign products = visited.getProducts()>
         <#else>
-              <#list user.getProducts() as product>
-                <#if x%3=0>
-                    </div>
-                    <!-- /row -->
-                    <!-- row -->
-                    <div class="row">
-                </#if>
-                    <!-- Product Single -->
-                    <div class="col-md-3 col-sm-6 col-xs-6">
-                        <div class="product product-single">
-                            <div class="product-thumb">
-                                <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> <a href="/by_product/${product.getId()}">Quick view</a></button>
-                                <img src="${product.getBase64Image()}" alt="${product.getName()} Image" width="300" height="300">
-                            </div>
-                            <div class="product-body">
-                                <h3 class="product-price">$${product.getPrice()}</h3>
-                                <div class="product-rating">
-                                    <#list 1..product.getRate() as i>
-                                        <i class="fa fa-star"></i>
+            <#assign products = user.getProducts()>
+        </#if>
+        <#list products as product>
+            <#if x%3=0>
+                </div>
+                <!-- /row -->
+                <!-- row -->
+                <div class="row">
+            </#if>
+                <!-- Product Single -->
+                <div class="col-md-3 col-sm-6 col-xs-6">
+                    <div class="product product-single">
+                        <div class="product-thumb">
+                            <button class="main-btn quick-view"><i class="fa fa-search-plus"></i> <a href="/by_product/${product.getId()}">Quick view</a></button>
+                            <img src="${product.getBase64Image()}" alt="${product.getName()} Image" width="300" height="300">
+                        </div>
+                        <div class="product-body">
+                            <h3 class="product-price">$${product.getPrice()}</h3>
+                            <div class="product-rating">
+                                <#list 1..product.getRate() as i>
+                                    <i class="fa fa-star"></i>
+                                </#list>
+                                <#if product.getRate() != 5>
+                                    <#list 1..5-product.getRate() as i>
+                                        <i class="fa fa-star-o empty"></i>
                                     </#list>
-                                    <#if product.getRate() != 5>
-                                        <#list 1..5-product.getRate() as i>
-                                            <i class="fa fa-star-o empty"></i>
-                                        </#list>
-                                    </#if>
-                                </div>
-                                <h2 class="product-name"><a href="#">${product.getName()}</a></h2>
-                                <div class="product-btns">
-                                    <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-                                    <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
-                                    <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
-                                </div>
+                                </#if>
+                            </div>
+                            <h2 class="product-name"><a href="#">${product.getName()}</a></h2>
+                            <div class="product-btns">
+                                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
+                                <button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
+                                <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
                             </div>
                         </div>
                     </div>
-                    <!-- /Product Single -->
-                <#assign x++>
-            </#list>
+                </div>
+                <!-- /Product Single -->
+            <#assign x++>
+        </#list>
 			</div>
 			<!-- /row -->
 		</div>
 		<!-- /container -->
-        </#if>
 
     <!-- End Right Column -->
     </div>

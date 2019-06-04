@@ -15,6 +15,8 @@ public interface ProductService {
 
     List<ProductModel> findByCategory(String category_id);
 
+    List<ProductModel> findByCategoryAsPage(String category_id, Integer page, Integer size);
+
     List<ProductModel> findByDate(LocalDateTime creationDate);
 
     List<ProductModel> findByLastWeek(LocalDateTime creationDate);
@@ -23,6 +25,18 @@ public interface ProductService {
 
     List<ProductModel> findByDiscount(Integer discount);
 
+    List<ProductModel> findByPriceBetweenAsPage(Integer low, Integer high, Integer page, Integer size);
+
+    List<ProductModel> findByPriceBetween(Integer low, Integer high);
+
     ProductModel delete(String id);
+
+    Integer getProductCount();
+
+    List<ProductModel> findAll();
+
+    List<ProductModel> findAllAsPage(Integer page, Integer size);
+
+    List<ProductModel> findByRateAsPage(Integer rate, Integer page, Integer size, String exceptProduct);
 
 }

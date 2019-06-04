@@ -42,8 +42,15 @@ public class ProductController {
     }
 
     @GetMapping("/by_category/{categoryId}")
-    public ResponseEntity<List<ProductModel>> listByCategoryId(@PathVariable String categoryId) {
+    public ResponseEntity<List<ProductModel>> listByCategory(@PathVariable String categoryId) {
         return ResponseEntity.ok(ProductService.findByCategory(categoryId));
+    }
+
+    @GetMapping("/by_category/{categoryId}/page")
+    public ResponseEntity<List<ProductModel>> listByCategoryAsPage(@PathVariable String categoryId,
+                                                                   @RequestParam(name = "page") Integer page,
+                                                                   @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(ProductService.findByCategoryAsPage(categoryId, page, size));
     }
 
     @GetMapping("/by_date/{creationDate}")
@@ -56,6 +63,14 @@ public class ProductController {
         return ResponseEntity.ok(ProductService.findByRate(rate));
     }
 
+    @GetMapping("/by_rate/{rate}/page")
+    public ResponseEntity<List<ProductModel>> listByRateAsPage(@PathVariable Integer rate,
+                                                               @RequestParam(name = "page") Integer page,
+                                                               @RequestParam(name = "size") Integer size,
+                                                               @RequestParam(name = "exceptProduct") String exceptProduct) {
+        return ResponseEntity.ok(ProductService.findByRateAsPage(rate, page, size, exceptProduct));
+    }
+
     @GetMapping("/by_discount/{discount}")
     public ResponseEntity<List<ProductModel>> listByDiscount(@PathVariable Integer discount) {
         return ResponseEntity.ok(ProductService.findByDiscount(discount));
@@ -64,6 +79,26 @@ public class ProductController {
     @GetMapping("/last_week")
     public ResponseEntity<List<ProductModel>> listByLastWeek() {
         return ResponseEntity.ok(ProductService.findByLastWeek(LocalDateTime.now()));
+    }
+
+    @GetMapping("/by_price/page")
+    public ResponseEntity<List<ProductModel>> listByPriceAsPage(@RequestParam(name = "low") Integer low, @RequestParam(name = "high") Integer high, @RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(ProductService.findByPriceBetweenAsPage(low, high, page, size));
+    }
+
+    @GetMapping("/by_price")
+    public ResponseEntity<List<ProductModel>> listByPrice(@RequestParam(name = "low") Integer low, @RequestParam(name = "high") Integer high) {
+        return ResponseEntity.ok(ProductService.findByPriceBetween(low, high));
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<ProductModel>> list() {
+        return ResponseEntity.ok(ProductService.findAll());
+    }
+
+    @GetMapping("/list/page")
+    public ResponseEntity<List<ProductModel>> listAsPage(@RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(ProductService.findAllAsPage(page, size));
     }
 
     @DeleteMapping("/{id}")
