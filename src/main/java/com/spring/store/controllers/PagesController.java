@@ -9,12 +9,14 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -97,6 +99,116 @@ public class PagesController {
         } else {
             return blank(new HashMap());
         }
+    }
+
+    @RequestMapping(value = "/profile/save", method = RequestMethod.POST)
+    public String saveAdmin(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
+
+        AdminModel user;
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            user = (AdminModel) request.getSession().getAttribute("user");
+        } else {
+            response.addHeader("location", "/404");
+            return blank(new HashMap());
+        }
+
+        if (request.getParameter("email") != null && !request.getParameter("email").isEmpty()) {
+            user.setEmail(request.getParameter("email"));
+        }
+        if (request.getParameter("pass") != null && !request.getParameter("pass").isEmpty()) {
+            user.setPassword(request.getParameter("pass"));
+        }
+        if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+            user.setPhone(request.getParameter("phone"));
+        }
+        if (request.getParameter("address") != null && !request.getParameter("address").isEmpty()) {
+            user.setAddress(request.getParameter("address"));
+        }
+        if (!image.isEmpty()) {
+            try {
+                if (image.getBytes().length != 0) {
+                    user.setImage(image.getBytes());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        user.setEmailVerifiedAt(LocalDateTime.now());
+
+        user = adminController.put(user).getBody();
+
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+
+        response.addHeader("location", "/profile/" + user.getName());
+        return profile(user.getName(), request, response);
+    }
+
+    @RequestMapping("/create_product")
+    public String createProduct(HttpServletRequest request, HttpServletResponse response) {
+        HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            AdminModel user = (AdminModel) request.getSession().getAttribute("user");
+            map.put("user", user);
+            return render(map, "create_product.ftl");
+        } else {
+            return blank(new HashMap());
+        }
+    }
+
+    @RequestMapping(value = "/product/save", method = RequestMethod.POST)
+    public String saveProduct(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
+
+        AdminModel user;
+        if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
+            user = (AdminModel) request.getSession().getAttribute("user");
+        } else {
+            response.addHeader("location", "/404");
+            return blank(new HashMap());
+        }
+
+        ProductModel product = new ProductModel();
+        if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
+            product.setName(request.getParameter("name"));
+        }
+        if (request.getParameter("price") != null && !request.getParameter("price").isEmpty()) {
+            product.setPrice(Integer.parseInt(request.getParameter("price")));
+        }
+        if (request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty()) {
+            product.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+        }
+        if (request.getParameter("discount") != null && !request.getParameter("discount").isEmpty()) {
+            product.setDiscountPrice(Integer.parseInt(request.getParameter("discount")));
+        } else {
+            product.setDiscountPrice(0);
+        }
+        if (request.getParameter("category") != null && !request.getParameter("category").isEmpty()) {
+            product.setCategoryId(request.getParameter("category"));
+        }
+        if (!image.isEmpty()) {
+            try {
+                if (image.getBytes().length != 0) {
+                    product.setImage(image.getBytes());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        product.setCreationDate(LocalDateTime.now());
+        product.setAdminId(user.getId());
+        product.setRate(1);
+
+        product = productController.post(product).getBody();
+
+        HttpSession session = request.getSession();
+        session.setAttribute("user", user);
+
+        response.addHeader("location", "/by_product/" + product.getId());
+        return product(product.getId(), request, response);
     }
 
     @RequestMapping("/products")

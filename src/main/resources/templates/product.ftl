@@ -30,14 +30,16 @@
 					<div class="col-md-6">
 						<div class="product-body">
 							<div class="product-label">
-							<#if product.getDiscountPrice() gt 0>
-                                <span>Discount</span>
-                                <span class="sale">-${product.getDiscountPrice()}%</span>
-							<#elseif product.getRate() gte 4>
-								<span>Hot</span>
-							<#elseif 10 gte product.getQuantity()>
-								<span>Limited</span>
-							</#if>
+							<#if product.getDiscountPrice()??>
+                                <#if product.getDiscountPrice() gt 0>
+                                    <span>Discount</span>
+                                    <span class="sale">-${product.getDiscountPrice()}%</span>
+                                <#elseif product.getRate() gte 4>
+                                    <span>Hot</span>
+                                <#elseif 10 gte product.getQuantity()>
+                                    <span>Limited</span>
+                                </#if>
+                            </#if>
 							</div>
                             <h2 class="product-name"><strong>${product.getName()}</strong></h2>
 							<#if product.getDiscountPrice() gt 0>
@@ -47,13 +49,15 @@
                                 <h3 class="product-price">$${product.getPrice()} </h3>
                             </#if>
 							<div>
-                                <#list 1..product.getRate() as i>
-                                    <i class="fa fa-star"></i>
-                                </#list>
-                                <#if product.getRate() != 5>
-                                    <#list 1..5-product.getRate() as i>
-                                        <i class="fa fa-star-o empty"></i>
+							    <#if product.getRate()??>
+                                    <#list 1..product.getRate() as i>
+                                        <i class="fa fa-star"></i>
                                     </#list>
+                                    <#if product.getRate() != 5>
+                                        <#list 1..5-product.getRate() as i>
+                                            <i class="fa fa-star-o empty"></i>
+                                        </#list>
+                                    </#if>
                                 </#if>
 							</div>
                             <br/>

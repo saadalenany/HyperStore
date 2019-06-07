@@ -16,5 +16,7 @@ public interface AdminService {
 
     AdminModel getByEmailAndPassword(String email, String password);
 
+    AdminModel getByUsernameAndPassword(String name, String password);
+
     AdminModel getByUsername(String username);
 }

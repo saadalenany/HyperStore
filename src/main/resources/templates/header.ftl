@@ -183,6 +183,16 @@
 						</li>
 						<!-- /Cart -->
 
+						<li class="header-account dropdown default-dropdown">
+							<#if user??>
+                                <a href="/create_product">
+                                    <div>
+                                        <button type="button" class="btn btn-default btn-sm">Create Product</button>
+                                    </div>
+                                </a>
+                            </#if>
+						</li>
+
 						<!-- Mobile nav toggle-->
 						<li class="nav-toggle">
 							<button class="nav-toggle-btn main-btn icon-btn"><i class="fa fa-bars"></i></button>

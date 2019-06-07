@@ -26,10 +26,10 @@ public class LoginController {
     @RequestMapping(value = "/checkLogin", method = RequestMethod.POST)
     public void checkLogin(HttpServletRequest request, HttpServletResponse response) {
 
-        String email = request.getParameter("email");
+        String name = request.getParameter("name");
         String pass = request.getParameter("pass");
 
-        AdminModel user = adminController.getByEmailAndPassword(email, pass).getBody();
+        AdminModel user = adminController.getByUsernameAndPassword(name, pass).getBody();
 
         if (user == null) {
             response.addHeader("location", "/login");

@@ -69,13 +69,15 @@
                         <div class="product-body">
                             <h3 class="product-price">$${product.getPrice()}</h3>
                             <div class="product-rating">
-                            <#list 1..product.getRate() as i>
-                                <i class="fa fa-star"></i>
-                            </#list>
-                            <#if product.getRate() != 5>
-                                <#list 1..5-product.getRate() as i>
-                                        <i class="fa fa-star-o empty"></i>
+                            <#if product.getRate()??>
+                                <#list 1..product.getRate() as i>
+                                    <i class="fa fa-star"></i>
                                 </#list>
+                                <#if product.getRate() != 5>
+                                    <#list 1..5-product.getRate() as i>
+                                            <i class="fa fa-star-o empty"></i>
+                                    </#list>
+                                </#if>
                             </#if>
                             </div>
                             <h2 class="product-name"><a href="#">${product.getName()}</a></h2>
