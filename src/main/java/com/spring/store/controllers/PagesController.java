@@ -146,13 +146,17 @@ public class PagesController {
     }
 
     @RequestMapping("/create_product")
-    public String createProduct(HttpServletRequest request, HttpServletResponse response) {
+    public String createProduct(@RequestParam(required = false, name = "product") String product_id, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
         map.put("categories", categories);
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             AdminModel user = (AdminModel) request.getSession().getAttribute("user");
             map.put("user", user);
+            if (product_id != null) {
+                ProductModel productModel = productController.get(product_id).getBody();
+                map.put("product", productModel);
+            }
             return render(map, "create_product.ftl");
         } else {
             return blank(new HashMap());
@@ -171,14 +175,17 @@ public class PagesController {
         }
 
         ProductModel product = new ProductModel();
+        if (request.getParameter("product") != null && !request.getParameter("product").isEmpty()) {
+            product = productController.get(request.getParameter("product")).getBody();
+        }
         if (request.getParameter("name") != null && !request.getParameter("name").isEmpty()) {
             product.setName(request.getParameter("name"));
         }
         if (request.getParameter("price") != null && !request.getParameter("price").isEmpty()) {
-            product.setPrice(Integer.parseInt(request.getParameter("price")));
+            product.setPrice(Integer.parseInt(request.getParameter("price").replace(",", "")));
         }
         if (request.getParameter("quantity") != null && !request.getParameter("quantity").isEmpty()) {
-            product.setQuantity(Integer.parseInt(request.getParameter("quantity")));
+            product.setQuantity(Integer.parseInt(request.getParameter("quantity").replace(",", "")));
         }
         if (request.getParameter("discount") != null && !request.getParameter("discount").isEmpty()) {
             product.setDiscountPrice(Integer.parseInt(request.getParameter("discount")));
@@ -202,7 +209,11 @@ public class PagesController {
         product.setAdminId(user.getId());
         product.setRate(1);
 
-        product = productController.post(product).getBody();
+        if (request.getParameter("product") != null && !request.getParameter("product").isEmpty()) {
+            product = productController.put(product).getBody();
+        } else {
+            product = productController.post(product).getBody();
+        }
 
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
@@ -261,6 +272,31 @@ public class PagesController {
         map.put("recommendedProducts", recommendedProducts);
         response.setStatus(200);
         return render(map, "product.ftl");
+    }
+
+    @RequestMapping("/delete_product/{product_id}")
+    public String deleteProduct(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        map.put("categories", categories);
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            map.put("user", user);
+            ProductModel productModel = productController.get(product_id).getBody();
+            if (productModel == null) {
+                return blank(map);
+            }
+            if (user.getId().equals(productModel.getAdminId())) {
+                productController.delete(product_id);
+                user = adminController.get(user.getId()).getBody();
+                return profile(user.getName(), request, response);
+            } else {
+                return blank(map);
+            }
+        } else {
+            return blank(new HashMap());
+        }
     }
 
     @RequestMapping({"/categories", "/categories/{catId}"})

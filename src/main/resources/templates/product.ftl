@@ -74,13 +74,16 @@
 								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
 								<div class="pull-right">
 									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-									<button class="main-btn icon-btn"><i class="fa fa-exchange"></i></button>
 									<button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
 								</div>
 							</div>
 						</div>
 					</div>
 
+                <#if user?? && user.getId() == product.getAdminId()>
+                    <a type="button" class="btn btn-danger" href="/delete_product/${product.getId()}">Delete Product</a>
+                    <a type="button" class="btn btn-warning" href="/create_product?product=${product.getId()}">Update Product</a>
+                </#if>
 				</div>
 				<!-- /Product Details -->
 			</div>

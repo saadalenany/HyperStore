@@ -18,12 +18,22 @@
                                 </div>
                                 <div class="flip-card-back">
                                     <h1>${user.getName()}</h1>
-                                    <input type="file" name="image" class="custom-file-input" id="customFile" class="btn btn-default">
+                                    <div class="custom-file mb-3">
+                                        <input type="file" class="custom-file-input" id="customFile" name="image">
+                                        <label class="custom-file-label" for="customFile">Choose Image</label>
+                                    </div>
+                                    <script>
+                                        // Add the following code if you want the name of the file appear on select
+                                        $(".custom-file-input").on("change", function() {
+                                            var fileName = $(this).val().split("\\").pop();
+                                            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+                                        });
+                                    </script>
                                 </div>
                             </div>
                         </div>
                         <br>
-                        <p><code>*</code> to indicate mandatory fields</p><br/>
+                        <p><code>*</code> indicates mandatory fields</p><br/>
                         <div class="product-body">
                             <div class="form-group">
                                 <label for="phone">Phone:*</label>

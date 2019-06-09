@@ -4,6 +4,8 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "product")
@@ -44,6 +46,9 @@ public class ProductEntity {
 
     @Column(name = "rate")
     private Integer rate;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<FavouritesEntity> favourites = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -123,5 +128,17 @@ public class ProductEntity {
 
     public void setRate(Integer rate) {
         this.rate = rate;
+    }
+
+    public List<FavouritesEntity> getFavourites() {
+        return favourites;
+    }
+
+    public void setFavourites(List<FavouritesEntity> newFavourites) {
+        this.favourites.clear();
+        if (newFavourites != null) {
+            newFavourites.forEach(pro -> pro.setProduct(this));
+            this.favourites.addAll(newFavourites);
+        }
     }
 }

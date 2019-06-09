@@ -5,8 +5,10 @@ import com.spring.store.dao.entities.CategoryEntity;
 import com.spring.store.dao.entities.ProductEntity;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<ProductEntity,String> {
 
-    @Query("SELECT p FROM ProductEntity p WHERE p.creationDate >= ?1 AND p.creationDate < CURDATE()")
+    @Query("SELECT p FROM ProductEntity p WHERE p.creationDate >= ?1")
     List<ProductEntity> getProductsFromLast7Days(LocalDateTime time);
 
     @Query("SELECT p FROM ProductEntity p WHERE p.creationDate >= ?1")
@@ -44,4 +46,8 @@ public interface ProductRepository extends JpaRepository<ProductEntity,String> {
     @Query("SELECT COUNT(p) FROM ProductEntity")
     Integer getProductCount();
 
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM ProductEntity p WHERE p.id = ?1")
+    void delete(String product_id);
 }

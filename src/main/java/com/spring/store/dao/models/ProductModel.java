@@ -62,11 +62,14 @@ public class ProductModel {
     }
 
     public Integer getPrice() {
+        String replaced = price.toString().replace(",", "");
+        price = Integer.parseInt(replaced);
         return price;
     }
 
     public void setPrice(Integer price) {
-        this.price = price;
+        String replaced = price.toString().replace(",", "");
+        this.price = Integer.parseInt(replaced);
     }
 
     public byte[] getImage() {
@@ -107,11 +110,14 @@ public class ProductModel {
     }
 
     public Integer getQuantity() {
+        String replaced = quantity.toString().replace(",", "");
+        quantity = Integer.parseInt(replaced);
         return quantity;
     }
 
     public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+        String replaced = quantity.toString().replace(",", "");
+        this.quantity = Integer.parseInt(replaced);
     }
 
     public Integer getRate() {

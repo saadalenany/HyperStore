@@ -115,10 +115,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductModel delete(String id) {
-        ProductEntity productEntity = repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No Product found with this id %s",id)));
-        repository.delete(productEntity);
-        return mapper.toModel(productEntity);
+    public void delete(String id) {
+        repository.delete(id);
     }
 
     @Override
