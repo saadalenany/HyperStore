@@ -2,7 +2,9 @@
 <databaseChangeLog
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+        logicalFilePath="init_system_schema.xml"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
 	<changeSet author="admin" id="1">
 		<preConditions onFail="MARK_RAN">
@@ -115,6 +117,44 @@
                              references="admin(id)"/>
             </column>
         </createTable>
+    </changeSet>
+
+    <changeSet author="admin" id="5" runOnChange="true">
+        <preConditions>
+            <tableExists tableName="category"/>
+        </preConditions>
+        <insert tableName="category">
+            <column name="id" value="4556ty76tr5786tg79ytg8r57jy6"/>
+            <column name="name" value="Food"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="456798796857463556ty7t6r57e4"/>
+            <column name="name" value="PCs, Laptops And Mobile Devices"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="h7y6tr55t6879yy96t8r5746et68"/>
+            <column name="name" value="Accessories"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="ikjuhy76t8hujhy9tg68r570hy97"/>
+            <column name="name" value="Clothes"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="jiuhy76tg8r574er5ftg6tg8657r"/>
+            <column name="name" value="Cars And Transports"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="ju7ylkojiuy7h86t087y96t85r5g"/>
+            <column name="name" value="Furniture"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="jmjuhygt6rf54rf54fr6554dre34"/>
+            <column name="name" value="TVs And Other Techs"/>
+        </insert>
+        <insert tableName="category">
+            <column name="id" value="mkjiuhy76tg8hyuhyogtfr75ftfr"/>
+            <column name="name" value="Software"/>
+        </insert>
     </changeSet>
 
 </databaseChangeLog>
