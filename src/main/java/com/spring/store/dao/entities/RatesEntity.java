@@ -5,8 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "favourites")
-public class FavouritesEntity {
+@Table(name = "rates")
+public class RatesEntity {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -15,12 +15,14 @@ public class FavouritesEntity {
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private AdminEntity admin;
-
-    @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductEntity product;
+
+    @Column(name = "review")
+    private String review;
+
+    @Column(name = "star")
+    private Integer star;
 
     public String getId() {
         return id;
@@ -30,19 +32,27 @@ public class FavouritesEntity {
         this.id = id;
     }
 
-    public AdminEntity getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(AdminEntity admin) {
-        this.admin = admin;
-    }
-
     public ProductEntity getProduct() {
         return product;
     }
 
     public void setProduct(ProductEntity product) {
         this.product = product;
+    }
+
+    public String getReview() {
+        return review;
+    }
+
+    public void setReview(String review) {
+        this.review = review;
+    }
+
+    public Integer getStar() {
+        return star;
+    }
+
+    public void setStar(Integer star) {
+        this.star = star;
     }
 }

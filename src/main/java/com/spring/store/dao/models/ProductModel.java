@@ -4,6 +4,7 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 
 public class ProductModel {
 
@@ -28,6 +29,8 @@ public class ProductModel {
     private Integer quantity;
 
     private Integer rate;
+
+    private List<RatesModel> rates;
 
     public String getId() {
         return id;
@@ -128,6 +131,14 @@ public class ProductModel {
         this.rate = rate;
     }
 
+    public List<RatesModel> getRates() {
+        return rates;
+    }
+
+    public void setRates(List<RatesModel> rates) {
+        this.rates = rates;
+    }
+
     @Override
     public String toString() {
         return "ProductModel{" +
@@ -142,6 +153,7 @@ public class ProductModel {
                 ", discountPrice=" + discountPrice +
                 ", quantity=" + quantity +
                 ", rate=" + rate +
+                ", rates=" + rates +
                 '}';
     }
 }

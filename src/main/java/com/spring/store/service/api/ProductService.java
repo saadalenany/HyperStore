@@ -29,7 +29,7 @@ public interface ProductService {
 
     List<ProductModel> findByPriceBetween(Integer low, Integer high);
 
-    void delete(String id);
+    ProductModel delete(String id);
 
     Integer getProductCount();
 

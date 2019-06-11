@@ -102,8 +102,8 @@ public class ProductController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable String id) {
-        ProductService.delete(id);
+    public ResponseEntity<ProductModel> delete(@PathVariable String id) {
+        return ResponseEntity.ok(ProductService.delete(id));
     }
 
 }

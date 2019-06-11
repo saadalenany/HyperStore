@@ -48,7 +48,7 @@ public class ProductEntity {
     private Integer rate;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FavouritesEntity> favourites = new ArrayList<>();
+    private List<RatesEntity> rates = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -130,15 +130,15 @@ public class ProductEntity {
         this.rate = rate;
     }
 
-    public List<FavouritesEntity> getFavourites() {
-        return favourites;
+    public List<RatesEntity> getRates() {
+        return rates;
     }
 
-    public void setFavourites(List<FavouritesEntity> newFavourites) {
-        this.favourites.clear();
-        if (newFavourites != null) {
-            newFavourites.forEach(pro -> pro.setProduct(this));
-            this.favourites.addAll(newFavourites);
+    public void setRates(List<RatesEntity> newRates) {
+        this.rates.clear();
+        if (newRates != null) {
+            newRates.forEach(pro -> pro.setProduct(this));
+            this.rates.addAll(newRates);
         }
     }
 }

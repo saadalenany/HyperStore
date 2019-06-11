@@ -51,13 +51,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductModel get(String id) {
-        ProductEntity productEntity = repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No Product found with this id %s",id)));
+        ProductEntity productEntity = repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No Product found with this id %s", id)));
         return mapper.toModel(productEntity);
     }
 
     @Override
     public List<ProductModel> findByAdmin(String adminId) {
-        AdminEntity adminEntity = adminRepository.findById(adminId).orElseThrow(() -> new RuntimeException(String.format("No Admin found with this id %s",adminId)));
+        AdminEntity adminEntity = adminRepository.findById(adminId).orElseThrow(() -> new RuntimeException(String.format("No Admin found with this id %s", adminId)));
         List<ProductEntity> productEntities = repository.getProductsByAdmin(adminEntity);
         return mapper.toModels(productEntities);
     }
@@ -71,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<ProductModel> findByCategoryAsPage(String categoryId, Integer page, Integer size) {
-        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s",categoryId)));
+        CategoryEntity categoryEntity = categoryRepository.findById(categoryId).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s", categoryId)));
         Pageable pageWithElements = PageRequest.of(page, size);
         List<ProductEntity> productEntities = repository.findByCategory(categoryEntity, pageWithElements);
         return mapper.toModels(productEntities);
@@ -115,8 +115,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(String id) {
-        repository.delete(id);
+    public ProductModel delete(String id) {
+        ProductEntity productEntity = repository.findById(id).orElseThrow(() -> new RuntimeException(String.format("No Product found with this ID %s", id)));
+        repository.delete(productEntity);
+        return mapper.toModel(productEntity);
     }
 
     @Override

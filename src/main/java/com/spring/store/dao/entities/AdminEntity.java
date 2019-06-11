@@ -42,9 +42,6 @@ public class AdminEntity {
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductEntity> products = new ArrayList<>();
 
-    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FavouritesEntity> favourites = new ArrayList<>();
-
     public String getId() {
         return id;
     }
@@ -121,15 +118,4 @@ public class AdminEntity {
         }
     }
 
-    public List<FavouritesEntity> getFavourites() {
-        return favourites;
-    }
-
-    public void setFavourites(List<FavouritesEntity> newFavourites) {
-        this.favourites.clear();
-        if (newFavourites != null) {
-            newFavourites.forEach(pro -> pro.setAdmin(this));
-            this.favourites.addAll(newFavourites);
-        }
-    }
 }

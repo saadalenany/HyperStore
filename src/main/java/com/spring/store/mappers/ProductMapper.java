@@ -8,7 +8,7 @@ import org.mapstruct.MappingInheritanceStrategy;
 
 import java.util.List;
 
-@Mapper(mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_ALL_FROM_CONFIG)
+@Mapper(uses = RatesMapper.class, mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_ALL_FROM_CONFIG)
 public interface ProductMapper {
 
     @Mapping(source = "category.id", target = "categoryId")

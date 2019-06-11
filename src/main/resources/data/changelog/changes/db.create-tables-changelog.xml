@@ -96,13 +96,13 @@
     <changeSet author="admin" id="4">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="favourites" schemaName="storedb"/>
+                <tableExists tableName="rates" schemaName="storedb"/>
             </not>
         </preConditions>
-        <comment>CREATE favourites IF NOT EXISTS</comment>
+        <comment>CREATE rates IF NOT EXISTS</comment>
         <createTable
                 schemaName="storedb"
-                tableName="favourites">
+                tableName="rates">
             <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -111,10 +111,9 @@
                              foreignKeyName="fk_product_favourites_id"
                              references="product(id)"/>
             </column>
-            <column name="admin_id" type="varchar(36)">
-                <constraints nullable="false"
-                             foreignKeyName="fk_admin_favourites_id"
-                             references="admin(id)"/>
+            <column name="review" type="varchar(255)"/>
+            <column name="star" type="int(11)">
+                <constraints nullable="false"/>
             </column>
         </createTable>
     </changeSet>
@@ -123,36 +122,37 @@
         <preConditions>
             <tableExists tableName="category"/>
         </preConditions>
+        <comment>INSERT 8 MAIN CATEGORIES</comment>
         <insert tableName="category">
-            <column name="id" value="4556ty76tr5786tg79ytg8r57jy6"/>
+            <column name="id" value="1"/>
             <column name="name" value="Food"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="456798796857463556ty7t6r57e4"/>
+            <column name="id" value="2"/>
             <column name="name" value="PCs, Laptops And Mobile Devices"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="h7y6tr55t6879yy96t8r5746et68"/>
+            <column name="id" value="3"/>
             <column name="name" value="Accessories"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="ikjuhy76t8hujhy9tg68r570hy97"/>
+            <column name="id" value="4"/>
             <column name="name" value="Clothes"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="jiuhy76tg8r574er5ftg6tg8657r"/>
+            <column name="id" value="5"/>
             <column name="name" value="Cars And Transports"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="ju7ylkojiuy7h86t087y96t85r5g"/>
+            <column name="id" value="6"/>
             <column name="name" value="Furniture"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="jmjuhygt6rf54rf54fr6554dre34"/>
+            <column name="id" value="7"/>
             <column name="name" value="TVs And Other Techs"/>
         </insert>
         <insert tableName="category">
-            <column name="id" value="mkjiuhy76tg8hyuhyogtfr75ftfr"/>
+            <column name="id" value="8"/>
             <column name="name" value="Software"/>
         </insert>
     </changeSet>
