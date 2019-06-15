@@ -6,6 +6,8 @@ public class RatesModel {
 
     private String productId;
 
+    private String adminId;
+
     private String review;
 
     private Integer star;
@@ -24,6 +26,14 @@ public class RatesModel {
 
     public void setProductId(String productId) {
         this.productId = productId;
+    }
+
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
     public String getReview() {
@@ -47,6 +57,7 @@ public class RatesModel {
         return "RatesModel{" +
                 "id='" + id + '\'' +
                 ", productId='" + productId + '\'' +
+                ", adminId=" + adminId +
                 ", review='" + review + '\'' +
                 ", star=" + star +
                 '}';

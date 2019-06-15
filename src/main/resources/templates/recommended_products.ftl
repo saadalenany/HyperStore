@@ -40,7 +40,6 @@
                             </div>
                             <h2 class="product-name"><a href="/by_product/${product.getId()}">${product.getName()}</a></h2>
                             <div class="product-btns">
-                                <button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
                                 <button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
                             </div>
                         </div>

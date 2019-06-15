@@ -18,6 +18,10 @@ public class RatesEntity {
     @JoinColumn(name = "product_id")
     private ProductEntity product;
 
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private AdminEntity admin;
+
     @Column(name = "review")
     private String review;
 
@@ -38,6 +42,14 @@ public class RatesEntity {
 
     public void setProduct(ProductEntity product) {
         this.product = product;
+    }
+
+    public AdminEntity getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(AdminEntity admin) {
+        this.admin = admin;
     }
 
     public String getReview() {

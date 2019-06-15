@@ -28,6 +28,8 @@ public class AdminModel {
 
     private List<ProductModel> products;
 
+    private List<RatesModel> rates;
+
     public String getId() {
         return id;
     }
@@ -113,6 +115,14 @@ public class AdminModel {
         this.products = products;
     }
 
+    public List<RatesModel> getRates() {
+        return rates;
+    }
+
+    public void setRates(List<RatesModel> rates) {
+        this.rates = rates;
+    }
+
     @Override
     public String toString() {
         return "AdminModel{" +
@@ -126,6 +136,7 @@ public class AdminModel {
                 ", password='" + password + '\'' +
                 ", address='" + address + '\'' +
                 ", products=" + products +
+                ", rates=" + rates +
                 '}';
     }
 }

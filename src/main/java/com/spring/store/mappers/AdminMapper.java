@@ -8,7 +8,7 @@ import org.mapstruct.MappingInheritanceStrategy;
 
 import java.util.List;
 
-@Mapper(uses = ProductMapper.class, mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_ALL_FROM_CONFIG)
+@Mapper(uses = {ProductMapper.class, RatesMapper.class}, mappingInheritanceStrategy = MappingInheritanceStrategy.AUTO_INHERIT_ALL_FROM_CONFIG)
 public interface AdminMapper {
 
     @Mapping(target = "base64Image", ignore = true)

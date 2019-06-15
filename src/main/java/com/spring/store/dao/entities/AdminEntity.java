@@ -42,6 +42,9 @@ public class AdminEntity {
     @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProductEntity> products = new ArrayList<>();
 
+    @OneToMany(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RatesEntity> rates = new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -118,4 +121,15 @@ public class AdminEntity {
         }
     }
 
+    public List<RatesEntity> getRates() {
+        return rates;
+    }
+
+    public void setRates(List<RatesEntity> newRates) {
+        this.rates.clear();
+        if (newRates != null) {
+            newRates.forEach(pro -> pro.setAdmin(this));
+            this.rates.addAll(newRates);
+        }
+    }
 }

@@ -106,11 +106,16 @@
             <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="product_id" type="varchar(36)">
-                <constraints nullable="false"
-                             foreignKeyName="fk_product_favourites_id"
-                             references="product(id)"/>
-            </column>
+			<column name="product_id" type="varchar(36)">
+				<constraints nullable="false"
+							 foreignKeyName="fk_product_rates_id"
+							 references="product(id)"/>
+			</column>
+			<column name="admin_id" type="varchar(36)">
+				<constraints nullable="false"
+							 foreignKeyName="fk_admin_rates_id"
+							 references="admin(id)"/>
+			</column>
             <column name="review" type="varchar(255)"/>
             <column name="star" type="int(11)">
                 <constraints nullable="false"/>
