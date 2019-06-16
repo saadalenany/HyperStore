@@ -43,6 +43,18 @@ public interface ProductRepository extends JpaRepository<ProductEntity,String> {
 
     List<ProductEntity> findByCategory(CategoryEntity category);
 
+    @Query("SELECT p FROM ProductEntity p WHERE p.category >= ?1 AND p.name like %?2%")
+    List<ProductEntity> findByCategoryAndName(CategoryEntity category, String name, Pageable pageable);
+
+    @Query("SELECT p FROM ProductEntity p WHERE p.category >= ?1 AND p.name like %?2%")
+    List<ProductEntity> findByCategoryAndName(CategoryEntity category, String name);
+
+    @Query("SELECT p FROM ProductEntity p WHERE p.name like %?1%")
+    List<ProductEntity> findByName(String name, Pageable pageable);
+
+    @Query("SELECT p FROM ProductEntity p WHERE p.name like %?1%")
+    List<ProductEntity> findByName(String name);
+
     @Query("SELECT COUNT(p) FROM ProductEntity")
     Integer getProductCount();
 

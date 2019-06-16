@@ -62,9 +62,9 @@
 
 					<!-- Search -->
 					<div class="header-search">
-						<form>
-							<input class="input search-input" type="text" placeholder="Enter your keyword">
-							<select class="input search-categories">
+						<form action="/search?page=1">
+							<input class="input search-input" type="text" name="name" placeholder="Enter your keyword">
+							<select name="category" class="input search-categories">
 								<option value="0">All Categories</option>
 								<#if categories??>
                                     <#list categories as cat>

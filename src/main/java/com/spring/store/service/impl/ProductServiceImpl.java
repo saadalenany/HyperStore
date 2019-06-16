@@ -78,6 +78,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductModel> findByCategoryAndNameAsPage(String category_id, String name, Integer page, Integer size) {
+        CategoryEntity categoryEntity = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s", category_id)));
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<ProductEntity> productEntities = repository.findByCategoryAndName(categoryEntity, name, pageWithElements);
+        return mapper.toModels(productEntities);
+    }
+
+    @Override
+    public List<ProductModel> findByCategoryAndName(String category_id, String name) {
+        CategoryEntity categoryEntity = categoryRepository.findById(category_id).orElseThrow(() -> new RuntimeException(String.format("No Category found with this id %s", category_id)));
+        List<ProductEntity> productEntities = repository.findByCategoryAndName(categoryEntity, name);
+        return mapper.toModels(productEntities);
+    }
+
+    @Override
+    public List<ProductModel> findByNameAsPage(String name, Integer page, Integer size) {
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<ProductEntity> productEntities = repository.findByName(name, pageWithElements);
+        return mapper.toModels(productEntities);
+    }
+
+    @Override
+    public List<ProductModel> findByName(String name) {
+        List<ProductEntity> productEntities = repository.findByName(name);
+        return mapper.toModels(productEntities);
+    }
+
+    @Override
     public List<ProductModel> findByDate(LocalDateTime creationDate) {
         List<ProductEntity> productsFromSpecificDate = repository.getProductsFromSpecificDate(creationDate);
         return mapper.toModels(productsFromSpecificDate);

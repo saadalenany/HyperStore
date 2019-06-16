@@ -53,6 +53,32 @@ public class ProductController {
         return ResponseEntity.ok(ProductService.findByCategoryAsPage(categoryId, page, size));
     }
 
+    @GetMapping("/by_category/{categoryId}/{name}/page")
+    public ResponseEntity<List<ProductModel>> listByCategoryAndNameAsPage(@PathVariable String categoryId,
+                                                                          @PathVariable String name,
+                                                                          @RequestParam(name = "page") Integer page,
+                                                                          @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(ProductService.findByCategoryAndNameAsPage(categoryId, name, page, size));
+    }
+
+    @GetMapping("/by_category/{categoryId}/{name}")
+    public ResponseEntity<List<ProductModel>> listByCategoryAndName(@PathVariable String categoryId,
+                                                                    @PathVariable String name) {
+        return ResponseEntity.ok(ProductService.findByCategoryAndName(categoryId, name));
+    }
+
+    @GetMapping("/by_name/{name}/page")
+    public ResponseEntity<List<ProductModel>> listByNameAsPage(@PathVariable String name,
+                                                               @RequestParam(name = "page") Integer page,
+                                                               @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(ProductService.findByNameAsPage(name, page, size));
+    }
+
+    @GetMapping("/by_name/{name}")
+    public ResponseEntity<List<ProductModel>> listByName(@PathVariable String name) {
+        return ResponseEntity.ok(ProductService.findByName(name));
+    }
+
     @GetMapping("/by_date/{creationDate}")
     public ResponseEntity<List<ProductModel>> listByCreationDate(@PathVariable LocalDateTime creationDate) {
         return ResponseEntity.ok(ProductService.findByDate(creationDate));

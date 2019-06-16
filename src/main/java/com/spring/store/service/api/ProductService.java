@@ -17,6 +17,14 @@ public interface ProductService {
 
     List<ProductModel> findByCategoryAsPage(String category_id, Integer page, Integer size);
 
+    List<ProductModel> findByCategoryAndNameAsPage(String category_id, String name, Integer page, Integer size);
+
+    List<ProductModel> findByCategoryAndName(String category_id, String name);
+
+    List<ProductModel> findByNameAsPage(String name, Integer page, Integer size);
+
+    List<ProductModel> findByName(String name);
+
     List<ProductModel> findByDate(LocalDateTime creationDate);
 
     List<ProductModel> findByLastWeek(LocalDateTime creationDate);

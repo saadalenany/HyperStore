@@ -386,6 +386,46 @@ public class PagesController {
         }
     }
 
+    @GetMapping("/search")
+    public String search(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                         @RequestParam(required = false, name = "category", defaultValue = "1") String category,
+                         @RequestParam(required = false, name = "name", defaultValue = "") String name,
+                         HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        HashMap<String, Object> map = new HashMap();
+        List<CategoryModel> categories = categoryController.list().getBody();
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
+            map.put("user", user);
+        }
+
+        List<ProductModel> products;
+        double sizeInt;
+        if (category.equals("0")) {
+            products = productController.listByNameAsPage(name, page - 1, 9).getBody();
+            sizeInt = Objects.requireNonNull(productController.listByName(name).getBody()).size();
+        } else {
+            products = productController.listByCategoryAndNameAsPage(category, name, page - 1, 9).getBody();
+            sizeInt = Objects.requireNonNull(productController.listByCategoryAndName(category, name).getBody()).size();
+        }
+
+        double size = Math.ceil(sizeInt / 9.0);
+
+        if (page <= 0 || page > size) {
+            page = 1;
+        }
+
+        map.put("products", products);
+        map.put("categories", categories);
+        map.put("page", page);
+        map.put("categoryId", category);
+        map.put("name", name);
+        map.put("size", size);
+        response.setStatus(200);
+        return render(map, "search.ftl");
+    }
+
     @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
