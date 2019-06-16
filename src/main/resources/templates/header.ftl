@@ -25,63 +25,23 @@
 	<!-- Font Awesome Icon -->
 	<link rel="stylesheet" href="/css/font-awesome.min.css">
 
-	<!-- Custom stlylesheet -->
+	<!-- Custom stylesheet -->
 	<link type="text/css" rel="stylesheet" href="/css/style.css" />
+
+	<!-- profile style -->
+	<link type="text/css" rel="stylesheet" href="/css/profile-style.css" />
+
+	<!-- Rating input -->
+	<link type="text/css" rel="stylesheet" href="/css/rating-input.css" />
 
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
-		  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-		<![endif]-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-
-    <style>
-        html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif}
-        body {
-          font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .flip-card {
-          background-color: transparent;
-          width: 400px;
-          height: 400px;
-          perspective: 1000px;
-        }
-
-        .flip-card-inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          text-align: center;
-          transition: transform 0.6s;
-          transform-style: preserve-3d;
-          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        }
-
-        .flip-card:hover .flip-card-inner {
-          transform: rotateY(180deg);
-        }
-
-        .flip-card-front, .flip-card-back {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          backface-visibility: hidden;
-        }
-
-        .flip-card-front {
-          background-color: #bbb;
-          color: black;
-        }
-
-        .flip-card-back {
-          background-color: #2980b9;
-          color: white;
-          transform: rotateY(180deg);
-        }
-    </style>
 
 </head>
 

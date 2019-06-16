@@ -22,6 +22,10 @@
                     </div>
                     <div class="flip-card-back">
                         <h1>${x.getName()}</h1>
+                        <#if visited??>
+                        <#else>
+                            <a href="/profile/${x.getName()}/settings" class="btn btn-default">Settings</a>
+                        </#if>
                     </div>
                 </div>
             </div>

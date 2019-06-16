@@ -40,6 +40,7 @@ public class PagesController {
         HashMap<String, Object> map = new HashMap();
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
             map.put("user", user);
         }
         List<CategoryModel> categories = categoryController.list().getBody();
@@ -61,14 +62,16 @@ public class PagesController {
         return render(map, "index.ftl");
     }
 
-    @RequestMapping("/profile/{username}")
+    @GetMapping("/profile/{username}")
     public String profile(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
         map.put("categories", categories);
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             AdminModel user = (AdminModel) request.getSession().getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
             map.put("user", user);
+            assert user != null;
             if (!user.getName().equals(username)) {
                 AdminModel visitedUser = adminController.getByName(username).getBody();
                 map.put("visited", visitedUser);
@@ -84,7 +87,7 @@ public class PagesController {
         }
     }
 
-    @RequestMapping("/profile/{username}/settings")
+    @GetMapping("/profile/{username}/settings")
     public String settings(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
@@ -101,15 +104,17 @@ public class PagesController {
         }
     }
 
-    @RequestMapping(value = "/profile/save", method = RequestMethod.POST)
-    public String saveAdmin(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
+    @PutMapping("/profile/save")
+    public void saveAdmin(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
 
         AdminModel user;
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             user = (AdminModel) request.getSession().getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
         } else {
-            response.addHeader("location", "/404");
-            return blank(new HashMap());
+            response.setHeader("Location", "/404");
+            response.setStatus(302);
+            return;
         }
 
         if (request.getParameter("email") != null && !request.getParameter("email").isEmpty()) {
@@ -141,17 +146,26 @@ public class PagesController {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
 
-        response.addHeader("location", "/profile/" + user.getName());
-        return profile(user.getName(), request, response);
+        response.setHeader("Location", "/profile/" + user.getName());
+        response.setStatus(302);
     }
 
-    @RequestMapping("/create_product")
+    @DeleteMapping("/delete_user/{admin_id}")
+    public void deleteAdmin(@PathVariable String admin_id, HttpServletRequest request, HttpServletResponse response) {
+        adminController.delete(admin_id);
+
+        response.setHeader("Location", "/login");
+        response.setStatus(302);
+    }
+
+    @GetMapping("/create_product")
     public String createProduct(@RequestParam(required = false, name = "product") String product_id, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
         map.put("categories", categories);
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             AdminModel user = (AdminModel) request.getSession().getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
             map.put("user", user);
             if (product_id != null) {
                 ProductModel productModel = productController.get(product_id).getBody();
@@ -163,15 +177,17 @@ public class PagesController {
         }
     }
 
-    @RequestMapping(value = "/product/save", method = RequestMethod.POST)
-    public String saveProduct(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
+    @PostMapping("/product/save")
+    public void saveProduct(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
 
         AdminModel user;
         if (request.getSession() != null && request.getSession().getAttribute("user") != null) {
             user = (AdminModel) request.getSession().getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
         } else {
-            response.addHeader("location", "/404");
-            return blank(new HashMap());
+            response.setHeader("Location", "/404");
+            response.setStatus(302);
+            return;
         }
 
         ProductModel product = new ProductModel();
@@ -218,11 +234,11 @@ public class PagesController {
         HttpSession session = request.getSession();
         session.setAttribute("user", user);
 
-        response.addHeader("location", "/by_product/" + product.getId());
-        return product(product.getId(), request, response);
+        response.setHeader("Location", "/by_product/" + product.getId());
+        response.setStatus(302);
     }
 
-    @RequestMapping("/products")
+    @GetMapping("/products")
     public String products(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
                            HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -230,6 +246,7 @@ public class PagesController {
         List<CategoryModel> categories = categoryController.list().getBody();
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
             map.put("user", user);
         }
 
@@ -250,7 +267,7 @@ public class PagesController {
         return render(map, "products.ftl");
     }
 
-    @RequestMapping("/by_product/{product_id}")
+    @GetMapping("/by_product/{product_id}")
     public String product(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
@@ -258,6 +275,7 @@ public class PagesController {
         map.put("categories", categories);
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
             map.put("user", user);
         }
         ProductModel productModel = productController.get(product_id).getBody();
@@ -275,31 +293,21 @@ public class PagesController {
     }
 
     @RequestMapping("/delete_product/{product_id}")
-    public String deleteProduct(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
+    public void deleteProduct(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        HashMap<String, Object> map = new HashMap();
-        List<CategoryModel> categories = categoryController.list().getBody();
-        map.put("categories", categories);
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
-            map.put("user", user);
-            ProductModel productModel = productController.get(product_id).getBody();
-            if (productModel == null) {
-                return blank(map);
-            }
-            if (user.getId().equals(productModel.getAdminId())) {
-                productController.delete(product_id);
-                user = adminController.get(user.getId()).getBody();
-                return profile(user.getName(), request, response);
-            } else {
-                return blank(map);
-            }
+            session.setAttribute("user", user);
+            productController.delete(product_id);
+            response.setHeader("Location", "/profile/" + user.getName());
+            response.setStatus(302);
         } else {
-            return blank(new HashMap());
+            response.setHeader("Location", "/404");
+            response.setStatus(302);
         }
     }
 
-    @RequestMapping({"/categories", "/categories/{catId}"})
+    @GetMapping({"/categories", "/categories/{catId}"})
     public String categories(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
                              @PathVariable(required = false, name = "catId") String catId,
                              HttpServletRequest request, HttpServletResponse response) {
@@ -308,6 +316,7 @@ public class PagesController {
         List<CategoryModel> categories = categoryController.list().getBody();
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
             map.put("user", user);
         }
 
@@ -334,13 +343,25 @@ public class PagesController {
         return render(map, "categories.ftl");
     }
 
-    @RequestMapping("/login")
+    @PutMapping("/by_rate")
+    public void updateRate(@RequestParam("admin_id") String admin_id,
+                           @RequestParam("product_id") String product_id,
+                           @RequestParam("rate") String rate) {
+
+        //TODO search for a rate by that admin_id & product_id
+        //TODO if one does exist
+        // set the rate number
+        //TODO if not
+        // create new rate & set the rate value
+    }
+
+    @GetMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
         return render(new HashMap(), "login.ftl");
     }
 
-    @RequestMapping("/404")
+    @GetMapping("/404")
     @ExceptionHandler(Throwable.class)
     public String blank(Map map) {
         return render(map, "blank.ftl");

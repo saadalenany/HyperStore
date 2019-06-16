@@ -57,7 +57,8 @@
                             </div>
                             <br/>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                                <a type="button" class="btn btn-danger" href="/delete_user/${user.getId()}">Delete Account</a>
                             </div>
                         </div>
                     </form>
