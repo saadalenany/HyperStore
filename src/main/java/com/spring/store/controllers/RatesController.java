@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/rates")
 public class RatesController {
@@ -36,6 +38,16 @@ public class RatesController {
     @DeleteMapping("/{id}")
     public ResponseEntity<RatesModel> delete(@PathVariable String id) {
         return ResponseEntity.ok(ratesService.delete(id));
+    }
+
+    @GetMapping("/{product_id}/{admin_id}")
+    public ResponseEntity<List<RatesModel>> getByProductAndAdmin(@PathVariable String product_id, @PathVariable String admin_id) {
+        return ResponseEntity.ok(ratesService.getByProductAndAdmin(product_id, admin_id));
+    }
+
+    @GetMapping("/{product_id}")
+    public ResponseEntity<List<RatesModel>> getByProduct(@PathVariable String product_id) {
+        return ResponseEntity.ok(ratesService.getByProduct(product_id));
     }
 
 }

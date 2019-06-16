@@ -4,6 +4,7 @@ import com.spring.store.config.WebConfig;
 import com.spring.store.dao.models.AdminModel;
 import com.spring.store.dao.models.CategoryModel;
 import com.spring.store.dao.models.ProductModel;
+import com.spring.store.dao.models.RatesModel;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -33,6 +34,9 @@ public class PagesController {
 
     @Autowired
     private CategoryController categoryController;
+
+    @Autowired
+    private RatesController ratesController;
 
     @RequestMapping({"/home", "/"})
     public String home(HttpServletRequest request, HttpServletResponse response) {
@@ -150,7 +154,7 @@ public class PagesController {
         response.setStatus(302);
     }
 
-    @DeleteMapping("/delete_user/{admin_id}")
+    @RequestMapping("/delete_user/{admin_id}")
     public void deleteAdmin(@PathVariable String admin_id, HttpServletRequest request, HttpServletResponse response) {
         adminController.delete(admin_id);
 
@@ -277,6 +281,10 @@ public class PagesController {
             AdminModel user = (AdminModel) session.getAttribute("user");
             user = adminController.get(user.getId()).getBody();
             map.put("user", user);
+            List<RatesModel> ratesModels = ratesController.getByProductAndAdmin(product_id, user.getId()).getBody();
+            if (!ratesModels.isEmpty()) {
+                map.put("rate", ratesModels.get(0));
+            }
         }
         ProductModel productModel = productController.get(product_id).getBody();
         CategoryModel categoryModel = categoryController.get(productModel.getCategoryId()).getBody();
@@ -343,16 +351,39 @@ public class PagesController {
         return render(map, "categories.ftl");
     }
 
-    @PutMapping("/by_rate")
+    @RequestMapping("/by_rate")
     public void updateRate(@RequestParam("admin_id") String admin_id,
                            @RequestParam("product_id") String product_id,
                            @RequestParam("rate") String rate) {
 
-        //TODO search for a rate by that admin_id & product_id
-        //TODO if one does exist
-        // set the rate number
-        //TODO if not
-        // create new rate & set the rate value
+        Integer star = Integer.parseInt(rate);
+        List<RatesModel> byProductAndAdmin = ratesController.getByProductAndAdmin(product_id, admin_id).getBody();
+
+        if (!byProductAndAdmin.isEmpty()) {
+            RatesModel ratesModel = byProductAndAdmin.get(0);
+            ratesModel.setStar(star);
+            ratesController.put(ratesModel);
+        } else {
+            RatesModel ratesModel = new RatesModel();
+            ratesModel.setProductId(product_id);
+            ratesModel.setAdminId(admin_id);
+            ratesModel.setStar(star);
+            ratesController.post(ratesModel);
+        }
+
+        List<RatesModel> byProduct = ratesController.getByProduct(product_id).getBody();
+        int totalRates = 0;
+        assert byProduct != null;
+        for (RatesModel ratesModel : byProduct) {
+            totalRates += ratesModel.getStar();
+        }
+        int productRate = Math.round(totalRates / byProduct.size());
+        ProductModel productModel = productController.get(product_id).getBody();
+        assert productModel != null;
+        if (totalRates != 0) {
+            productModel.setRate(productRate);
+            productController.post(productModel);
+        }
     }
 
     @GetMapping("/login")

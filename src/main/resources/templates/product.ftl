@@ -66,41 +66,6 @@
 
 							<br/><hr/><br/>
 
-                            <div>
-                                <form class="rating">
-                                  <label>
-                                    <input type="radio" name="stars" value="1" />
-                                    <span class="icon">★</span>
-                                  </label>
-                                  <label>
-                                    <input type="radio" name="stars" value="2" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                  </label>
-                                  <label>
-                                    <input type="radio" name="stars" value="3" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                  </label>
-                                  <label>
-                                    <input type="radio" name="stars" value="4" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                  </label>
-                                  <label>
-                                    <input type="radio" name="stars" value="5" />
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                    <span class="icon">★</span>
-                                  </label>
-                                </form>
-                            </div><br/>
-
 							<div class="product-btns">
 								<div class="qty-input">
 									<span class="text-uppercase">QTY: </span>
@@ -108,8 +73,7 @@
 								</div>
 								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
 								<div class="pull-right">
-									<button class="main-btn icon-btn"><i class="fa fa-heart"></i></button>
-									<button class="main-btn icon-btn"><i class="fa fa-share-alt"></i></button>
+                                    <#include "star_rating.ftl">
 								</div>
 							</div>
 						</div>

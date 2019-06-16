@@ -13,4 +13,8 @@ public interface RatesService {
     RatesModel get(String rateId);
 
     RatesModel delete(String rateId);
+
+    List<RatesModel> getByProduct(String productId);
+
+    List<RatesModel> getByProductAndAdmin(String productId, String adminId);
 }

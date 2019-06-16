@@ -49,4 +49,16 @@ public class RatesServiceImpl implements RatesService {
         ratesRepository.delete(ratesEntity);
         return ratesMapper.toModel(ratesEntity);
     }
+
+    @Override
+    public List<RatesModel> getByProduct(String productId) {
+        List<RatesEntity> byProduct = ratesRepository.findByProduct(productId);
+        return ratesMapper.toModels(byProduct);
+    }
+
+    @Override
+    public List<RatesModel> getByProductAndAdmin(String productId, String adminId) {
+        List<RatesEntity> byProductAndAdmin = ratesRepository.findByProductAndAdmin(productId, adminId);
+        return ratesMapper.toModels(byProductAndAdmin);
+    }
 }

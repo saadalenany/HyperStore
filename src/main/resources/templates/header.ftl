@@ -90,10 +90,13 @@
                                 </a>
                             <#else>
     							<a href="/login">
-                                    <div class="header-btns-icon">
-                                        <i class="fa fa-user-o"></i>
+                                    <div class="dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="true">
+                                        <div class="header-btns-icon">
+                                            <i class="fa fa-user-o"></i>
+                                        </div>
+                                        <strong class="text-uppercase">Join <i class="fa fa-caret-down"></i></strong>
                                     </div>
-                                    <strong class="text-uppercase">Join</strong>
+                                    <a href="/login" class="text-uppercase"> Login</a>
     							</a>
                             </#if>
 						</li>

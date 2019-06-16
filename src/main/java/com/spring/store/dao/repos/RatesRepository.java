@@ -17,4 +17,7 @@ public interface RatesRepository extends JpaRepository<RatesEntity, String> {
     @Modifying
     @Query("DELETE FROM RatesEntity r WHERE r.id = ?1")
     void deleteById(String id);
+
+    @Query("SELECT r FROM RatesEntity r WHERE r.product.id = ?1 AND r.admin.id = ?2")
+    List<RatesEntity> findByProductAndAdmin(String productId, String adminId);
 }
