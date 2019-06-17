@@ -66,7 +66,7 @@ public class PagesController {
         return render(map, "index.ftl");
     }
 
-    @GetMapping("/profile/{username}")
+    @RequestMapping("/profile/{username}")
     public String profile(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
@@ -91,7 +91,7 @@ public class PagesController {
         }
     }
 
-    @GetMapping("/profile/{username}/settings")
+    @RequestMapping("/profile/{username}/settings")
     public String settings(@PathVariable String username, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
@@ -108,7 +108,7 @@ public class PagesController {
         }
     }
 
-    @PutMapping("/profile/save")
+    @RequestMapping("/profile/save")
     public void saveAdmin(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
 
         AdminModel user;
@@ -162,7 +162,7 @@ public class PagesController {
         response.setStatus(302);
     }
 
-    @GetMapping("/create_product")
+    @RequestMapping("/create_product")
     public String createProduct(@RequestParam(required = false, name = "product") String product_id, HttpServletRequest request, HttpServletResponse response) {
         HashMap<String, Object> map = new HashMap();
         List<CategoryModel> categories = categoryController.list().getBody();
@@ -181,7 +181,7 @@ public class PagesController {
         }
     }
 
-    @PostMapping("/product/save")
+    @RequestMapping("/product/save")
     public void saveProduct(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "image") MultipartFile image) {
 
         AdminModel user;
@@ -242,7 +242,7 @@ public class PagesController {
         response.setStatus(302);
     }
 
-    @GetMapping("/products")
+    @RequestMapping("/products")
     public String products(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
                            HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
@@ -271,7 +271,7 @@ public class PagesController {
         return render(map, "products.ftl");
     }
 
-    @GetMapping("/by_product/{product_id}")
+    @RequestMapping("/by_product/{product_id}")
     public String product(@PathVariable String product_id, HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
@@ -315,7 +315,7 @@ public class PagesController {
         }
     }
 
-    @GetMapping({"/categories", "/categories/{catId}"})
+    @RequestMapping({"/categories", "/categories/{catId}"})
     public String categories(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
                              @PathVariable(required = false, name = "catId") String catId,
                              HttpServletRequest request, HttpServletResponse response) {
@@ -386,7 +386,7 @@ public class PagesController {
         }
     }
 
-    @GetMapping("/search")
+    @RequestMapping("/search")
     public String search(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
                          @RequestParam(required = false, name = "category", defaultValue = "1") String category,
                          @RequestParam(required = false, name = "name", defaultValue = "") String name,
@@ -426,13 +426,13 @@ public class PagesController {
         return render(map, "search.ftl");
     }
 
-    @GetMapping("/login")
+    @RequestMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
         return render(new HashMap(), "login.ftl");
     }
 
-    @GetMapping("/404")
+    @RequestMapping("/404")
     @ExceptionHandler(Throwable.class)
     public String blank(Map map) {
         return render(map, "blank.ftl");
