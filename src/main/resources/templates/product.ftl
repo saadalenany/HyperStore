@@ -69,9 +69,11 @@
 							<div class="product-btns">
 								<div class="qty-input">
 									<span class="text-uppercase">QTY: </span>
-									<input class="input" type="number">
+									<input id="qty" name="qty" class="input" type="number" min="1" max="${product.getQuantity()}" value="1"/>
 								</div>
-								<button class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+								<button onclick="addToCart('${product.getId()}',0)" class="primary-btn add-to-cart">
+								    <i class="fa fa-shopping-cart"></i> Add to Cart
+                                </button>
 								<div class="pull-right">
                                     <#include "star_rating.ftl">
 								</div>

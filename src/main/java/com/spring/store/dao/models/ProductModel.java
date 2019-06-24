@@ -141,7 +141,7 @@ public class ProductModel {
 
     @Override
     public String toString() {
-        return "ProductModel{" +
+        return "Product = {" +
                 "id='" + id + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 ", adminId='" + adminId + '\'' +

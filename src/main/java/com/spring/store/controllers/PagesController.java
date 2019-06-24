@@ -1,5 +1,6 @@
 package com.spring.store.controllers;
 
+import com.google.gson.Gson;
 import com.spring.store.config.WebConfig;
 import com.spring.store.dao.models.AdminModel;
 import com.spring.store.dao.models.CategoryModel;
@@ -17,11 +18,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
 public class PagesController {
@@ -426,6 +429,57 @@ public class PagesController {
         return render(map, "search.ftl");
     }
 
+    @RequestMapping("/refresh_cart")
+    public String refreshCart(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+
+        String macAddress = getClientMacAddress();
+
+        List<ProductModel> products;
+        if (session.getAttribute(macAddress + " products") != null) {
+            products = (List<ProductModel>) session.getAttribute(macAddress + " products");
+        } else {
+            products = new ArrayList<>();
+            session.setAttribute(macAddress + " products", products);
+        }
+
+        Gson gson = new Gson();
+        return gson.toJson(products);
+    }
+
+    @RequestMapping("/add_to_cart")
+    public String addToCart(@RequestParam(name = "id") String id, @RequestParam(name = "qty") Integer qty, HttpServletRequest request, HttpServletResponse response) {
+
+        ProductModel product = productController.get(id).getBody();
+        assert product != null;
+        product.setQuantity(qty);
+
+        String macAddress = getClientMacAddress();
+
+        HttpSession session = request.getSession();
+        List<ProductModel> products;
+        if (session.getAttribute(macAddress + " products") != null) {
+            products = (List<ProductModel>) session.getAttribute(macAddress + " products");
+        } else {
+            products = new ArrayList<>();
+            session.setAttribute(macAddress + " products", products);
+        }
+        AtomicBoolean exists = new AtomicBoolean(false);
+        products.forEach(pro -> {
+            if (pro.getId().equals(id)) {
+                pro.setQuantity(qty);
+                exists.set(true);
+            }
+        });
+        if (!exists.get()) {
+            products.add(product);
+        }
+
+        product.setBase64Image(product.getBase64Image());
+        Gson gson = new Gson();
+        return gson.toJson(product);
+    }
+
     @RequestMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
@@ -438,7 +492,7 @@ public class PagesController {
         return render(map, "blank.ftl");
     }
 
-    public String render(Map map, String filename) {
+    private String render(Map map, String filename) {
         // write the freemarker output to a StringWriter
         StringWriter stringWriter = new StringWriter();
         try {
@@ -451,6 +505,24 @@ public class PagesController {
             e.printStackTrace();
         }
         return stringWriter.toString();
+    }
+
+    private String getClientMacAddress() {
+        String macAddress = "";
+        InetAddress ip;
+        try {
+            ip = InetAddress.getLocalHost();
+            NetworkInterface network = NetworkInterface.getByInetAddress(ip);
+            byte[] mac = network.getHardwareAddress();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < mac.length; i++) {
+                sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+            }
+            macAddress = sb.toString();
+        } catch (UnknownHostException | SocketException e) {
+            e.printStackTrace();
+        }
+        return macAddress;
     }
 
 }
