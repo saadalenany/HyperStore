@@ -426,7 +426,8 @@ public class PagesController {
             products = (List<ProductModel>) session.getAttribute(macAddress + " products");
             int total = 0;
             for (ProductModel p : products) {
-                total += (p.getPrice() * p.getQuantity());
+                int discounted = p.getPrice() - ((p.getPrice() * p.getDiscountPrice()) / 100);
+                total += (discounted * p.getQuantity());
             }
             map.put("products", products);
             map.put("total", total);

@@ -20,7 +20,6 @@
 				<form id="checkout-form" class="clearfix">
 					<div class="col-md-6">
 						<div class="billing-details">
-							<p>Already a customer ? <a href="#">Login</a></p>
 							<div class="section-title">
 								<h3 class="title">Billing Details</h3>
 							</div>
@@ -102,55 +101,43 @@
 										<th class="text-right"></th>
 									</tr>
 								</thead>
-								<tbody>
+								<tbody id="checkout_table">
+								<#assign index=0>
+                                <#list products as product>
 									<tr>
-										<td class="thumb"><img src="./img/thumb-product01.jpg" alt=""></td>
+										<td class="thumb"><img src="${product.getBase64Image()}" alt="${product.getName()}"></td>
 										<td class="details">
-											<a href="#">Product Name Goes Here</a>
+											<a href="/by_product/${product.getId()}">${product.getName()}</a>
 											<ul>
-												<li><span>Size: XL</span></li>
-												<li><span>Color: Camelot</span></li>
+                                                <div class="product-rating">
+                                                    <#list 1..product.getRate() as i>
+                                                        <i class="fa fa-star"></i>
+                                                    </#list>
+                                                    <#if product.getRate() != 5>
+                                                        <#list 1..5-product.getRate() as i>
+                                                            <i class="fa fa-star-o empty"></i>
+                                                        </#list>
+                                                    </#if>
+                                                </div>
 											</ul>
 										</td>
-										<td class="price text-center"><strong>$32.50</strong><br><del class="font-weak"><small>$40.00</small></del></td>
-										<td class="qty text-center"><input class="input" type="number" value="1"></td>
-										<td class="total text-center"><strong class="primary-color">$32.50</strong></td>
-										<td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
+                                        <#assign x = product.getPrice() - product.getPrice() * product.getDiscountPrice() / 100>
+										<td class="price text-center"><strong>$${x}</strong><br><del class="font-weak"><small>$${product.getPrice()}</small></del></td>
+										<td class="qty text-center"><strong>$${product.getQuantity()}</strong></td>
+										<#assign sub_tot = x * product.getQuantity()>
+										<td class="total text-center"><strong class="primary-color">$${sub_tot}</strong></td>
+										<td class="text-right">
+										    <button class="main-btn icon-btn" onclick="deleteProductFromCheckout('${product.getId()}', ${index}, ${sub_tot}, ${total})"><i class="fa fa-close"></i></button>
+                                        </td>
 									</tr>
-									<tr>
-										<td class="thumb"><img src="./img/thumb-product01.jpg" alt=""></td>
-										<td class="details">
-											<a href="#">Product Name Goes Here</a>
-											<ul>
-												<li><span>Size: XL</span></li>
-												<li><span>Color: Camelot</span></li>
-											</ul>
-										</td>
-										<td class="price text-center"><strong>$32.50</strong></td>
-										<td class="qty text-center"><input class="input" type="number" value="1"></td>
-										<td class="total text-center"><strong class="primary-color">$32.50</strong></td>
-										<td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
-									</tr>
-									<tr>
-										<td class="thumb"><img src="./img/thumb-product01.jpg" alt=""></td>
-										<td class="details">
-											<a href="#">Product Name Goes Here</a>
-											<ul>
-												<li><span>Size: XL</span></li>
-												<li><span>Color: Camelot</span></li>
-											</ul>
-										</td>
-										<td class="price text-center"><strong>$32.50</strong></td>
-										<td class="qty text-center"><input class="input" type="number" value="1"></td>
-										<td class="total text-center"><strong class="primary-color">$32.50</strong></td>
-										<td class="text-right"><button class="main-btn icon-btn"><i class="fa fa-close"></i></button></td>
-									</tr>
+									<#assign index = index + 1>
+                                </#list>
 								</tbody>
 								<tfoot>
 									<tr>
 										<th class="empty" colspan="3"></th>
 										<th>TOTAL</th>
-										<th colspan="2" class="total">$${total}</th>
+										<th colspan="2" class="total" id="total_price">$${total}</th>
 									</tr>
 								</tfoot>
                             <#else>

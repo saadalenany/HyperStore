@@ -118,7 +118,7 @@
 
 									</div>
 									<div class="shopping-cart-btns">
-										<button class="main-btn">Checkout</button>
+										<a href="/checkout"><button class="main-btn">Checkout</button></a>
 									</div>
 								</div>
 							</div>
