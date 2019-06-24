@@ -47,13 +47,30 @@
                                 <label for="pwd">Password:*</label>
                                 <input type="password" class="form-control" id="pwd" name="pass" value="${user.getPassword()}" required>
                             </div>
-                            <div class="form-group">
-                                <label for="country">Address:</label>
+                            <script src="/js/location.js"></script>
+                            <div class="group">
                                 <#if user.getAddress()??>
-                                    <input type="text" placeholder="Address" class="form-control" id="country" value="${user.getAddress()}" name="address">
-                                <#else>
-                                    <input type="text" placeholder="Address" class="form-control" id="country" name="address">
+                                    <label for="country">Current Address: ${user.getAddress()}</label>
+                                    <input hidden="true" value="${user.getAddress()}" name="address" />
                                 </#if>
+    							<div class="form-group">
+                                    <select class="input" style="display: block; height: 40px;" onchange="set_country(this,country,city_state)" size="1" name="region">
+                                        <option value="" disabled selected>SELECT REGION</option>
+                                        <script type="text/javascript">
+                                            setRegions(this);
+                                        </script>
+                                    </select>
+                                </div>
+    							<div class="form-group">
+                                    <select class="input" style="display: block; height: 40px;" name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)">
+                                    </select>
+                                </div>
+    							<div class="form-group">
+                                    <select class="input" style="display: block; height: 40px;" name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)">
+                                    </select>
+                                </div>
+                                <input type="hidden" name="region" id="txtregion"></input>
+                                <input type="hidden" name="place" id="txtplacename"></input>
                             </div>
                             <br/>
                             <div class="form-group">

@@ -1,6 +1,5 @@
 package com.spring.store.controllers;
 
-import com.google.gson.Gson;
 import com.spring.store.config.WebConfig;
 import com.spring.store.dao.models.AdminModel;
 import com.spring.store.dao.models.CategoryModel;
@@ -23,8 +22,10 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class PagesController {
@@ -133,7 +134,11 @@ public class PagesController {
         if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
             user.setPhone(request.getParameter("phone"));
         }
-        if (request.getParameter("address") != null && !request.getParameter("address").isEmpty()) {
+
+        if ((request.getParameter("region") != null && !request.getParameter("region").isEmpty()) &
+                (request.getParameter("place") != null && !request.getParameter("place").isEmpty())) {
+            user.setAddress(request.getParameter("region") + ", " + request.getParameter("place"));
+        } else {
             user.setAddress(request.getParameter("address"));
         }
         if (!image.isEmpty()) {
@@ -354,41 +359,6 @@ public class PagesController {
         return render(map, "categories.ftl");
     }
 
-    @RequestMapping("/by_rate")
-    public void updateRate(@RequestParam("admin_id") String admin_id,
-                           @RequestParam("product_id") String product_id,
-                           @RequestParam("rate") String rate) {
-
-        Integer star = Integer.parseInt(rate);
-        List<RatesModel> byProductAndAdmin = ratesController.getByProductAndAdmin(product_id, admin_id).getBody();
-
-        if (!byProductAndAdmin.isEmpty()) {
-            RatesModel ratesModel = byProductAndAdmin.get(0);
-            ratesModel.setStar(star);
-            ratesController.put(ratesModel);
-        } else {
-            RatesModel ratesModel = new RatesModel();
-            ratesModel.setProductId(product_id);
-            ratesModel.setAdminId(admin_id);
-            ratesModel.setStar(star);
-            ratesController.post(ratesModel);
-        }
-
-        List<RatesModel> byProduct = ratesController.getByProduct(product_id).getBody();
-        int totalRates = 0;
-        assert byProduct != null;
-        for (RatesModel ratesModel : byProduct) {
-            totalRates += ratesModel.getStar();
-        }
-        int productRate = Math.round(totalRates / byProduct.size());
-        ProductModel productModel = productController.get(product_id).getBody();
-        assert productModel != null;
-        if (totalRates != 0) {
-            productModel.setRate(productRate);
-            productController.post(productModel);
-        }
-    }
-
     @RequestMapping("/search")
     public String search(@RequestParam(required = false, name = "page", defaultValue = "1") int page,
                          @RequestParam(required = false, name = "category", defaultValue = "1") String category,
@@ -396,11 +366,16 @@ public class PagesController {
                          HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
-        List<CategoryModel> categories = categoryController.list().getBody();
         if (session.getAttribute("user") != null) {
             AdminModel user = (AdminModel) session.getAttribute("user");
             user = adminController.get(user.getId()).getBody();
             map.put("user", user);
+        }
+        if (session.getAttribute("categories") != null) {
+            map.put("categories", session.getAttribute("categories"));
+        } else {
+            List<CategoryModel> categories = categoryController.list().getBody();
+            map.put("categories", categories);
         }
 
         List<ProductModel> products;
@@ -420,7 +395,6 @@ public class PagesController {
         }
 
         map.put("products", products);
-        map.put("categories", categories);
         map.put("page", page);
         map.put("categoryId", category);
         map.put("name", name);
@@ -429,55 +403,36 @@ public class PagesController {
         return render(map, "search.ftl");
     }
 
-    @RequestMapping("/refresh_cart")
-    public String refreshCart(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping("/checkout")
+    public String checkout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
+        HashMap<String, Object> map = new HashMap();
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
+            map.put("user", user);
+        }
+        if (session.getAttribute("categories") != null) {
+            map.put("categories", session.getAttribute("categories"));
+        } else {
+            List<CategoryModel> categories = categoryController.list().getBody();
+            map.put("categories", categories);
+        }
 
         String macAddress = getClientMacAddress();
 
         List<ProductModel> products;
         if (session.getAttribute(macAddress + " products") != null) {
             products = (List<ProductModel>) session.getAttribute(macAddress + " products");
-        } else {
-            products = new ArrayList<>();
-            session.setAttribute(macAddress + " products", products);
-        }
-
-        Gson gson = new Gson();
-        return gson.toJson(products);
-    }
-
-    @RequestMapping("/add_to_cart")
-    public String addToCart(@RequestParam(name = "id") String id, @RequestParam(name = "qty") Integer qty, HttpServletRequest request, HttpServletResponse response) {
-
-        ProductModel product = productController.get(id).getBody();
-        assert product != null;
-        product.setQuantity(qty);
-
-        String macAddress = getClientMacAddress();
-
-        HttpSession session = request.getSession();
-        List<ProductModel> products;
-        if (session.getAttribute(macAddress + " products") != null) {
-            products = (List<ProductModel>) session.getAttribute(macAddress + " products");
-        } else {
-            products = new ArrayList<>();
-            session.setAttribute(macAddress + " products", products);
-        }
-        AtomicBoolean exists = new AtomicBoolean(false);
-        products.forEach(pro -> {
-            if (pro.getId().equals(id)) {
-                pro.setQuantity(qty);
-                exists.set(true);
+            int total = 0;
+            for (ProductModel p : products) {
+                total += (p.getPrice() * p.getQuantity());
             }
-        });
-        if (!exists.get()) {
-            products.add(product);
+            map.put("products", products);
+            map.put("total", total);
         }
 
-        product.setBase64Image(product.getBase64Image());
-        Gson gson = new Gson();
-        return gson.toJson(product);
+        return render(map, "checkout.ftl");
     }
 
     @RequestMapping("/login")

@@ -1,0 +1,155 @@
+package com.spring.store.dao.models;
+
+import java.time.LocalDateTime;
+
+public class PaymentModel {
+
+    private String id;
+
+    private String productId;
+
+    private String firstName;
+
+    private String lastName;
+
+    private String email;
+
+    private String address;
+
+    private String zipCode;
+
+    private String macAddress;
+
+    private String phone;
+
+    private LocalDateTime buyDate;
+
+    private Integer quantity;
+
+    private String shipping;
+
+    private Integer price;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getZipCode() {
+        return zipCode;
+    }
+
+    public void setZipCode(String zipCode) {
+        this.zipCode = zipCode;
+    }
+
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public LocalDateTime getBuyDate() {
+        return buyDate;
+    }
+
+    public void setBuyDate(LocalDateTime buyDate) {
+        this.buyDate = buyDate;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getShipping() {
+        return shipping;
+    }
+
+    public void setShipping(String shipping) {
+        this.shipping = shipping;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "PaymentModel = {" +
+                "id='" + id + '\'' +
+                ", productId='" + productId + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", address='" + address + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", macAddress='" + macAddress + '\'' +
+                ", phone='" + phone + '\'' +
+                ", buyDate=" + buyDate +
+                ", quantity=" + quantity +
+                ", shipping='" + shipping + '\'' +
+                ", price=" + price +
+                '}';
+    }
+}

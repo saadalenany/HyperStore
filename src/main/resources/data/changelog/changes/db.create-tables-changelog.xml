@@ -123,7 +123,43 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="admin" id="5" runOnChange="true">
+    <changeSet author="admin" id="5">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="payments" schemaName="storedb"/>
+            </not>
+        </preConditions>
+        <comment>CREATE payments IF NOT EXISTS</comment>
+        <createTable
+                schemaName="storedb"
+                tableName="payments">
+            <column name="id" type="varchar(36)">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="varchar(36)">
+                <constraints nullable="false"
+                             foreignKeyName="fk_product_payment_id"
+                             references="product(id)"/>
+            </column>
+            <column name="first_name" type="varchar(255)"/>
+            <column name="last_name" type="varchar(255)"/>
+            <column name="email" type="varchar(255)"/>
+            <column name="address" type="varchar(100)"/>
+            <column name="zip_code" type="varchar(255)"/>
+            <column name="phone" type="varchar(255)"/>
+            <column name="buyer" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="buy_date" type="datetime(3)"/>
+            <column name="quantity" type="int(3)"/>
+            <column name="shipping" type="varchar(255)"/>
+            <column name="price" type="int(3)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="admin" id="6" runOnChange="true">
         <preConditions>
             <tableExists tableName="category"/>
         </preConditions>

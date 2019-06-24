@@ -32,6 +32,8 @@ public class ProductModel {
 
     private List<RatesModel> rates;
 
+    private List<PaymentModel> payments;
+
     public String getId() {
         return id;
     }
@@ -139,9 +141,17 @@ public class ProductModel {
         this.rates = rates;
     }
 
+    public List<PaymentModel> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentModel> payments) {
+        this.payments = payments;
+    }
+
     @Override
     public String toString() {
-        return "Product = {" +
+        return "ProductModel{" +
                 "id='" + id + '\'' +
                 ", categoryId='" + categoryId + '\'' +
                 ", adminId='" + adminId + '\'' +
@@ -154,6 +164,7 @@ public class ProductModel {
                 ", quantity=" + quantity +
                 ", rate=" + rate +
                 ", rates=" + rates +
+                ", payments=" + payments +
                 '}';
     }
 }

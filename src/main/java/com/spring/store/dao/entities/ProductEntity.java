@@ -50,6 +50,9 @@ public class ProductEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RatesEntity> rates = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PaymentEntity> payments = new ArrayList<>();
+
     public String getId() {
         return id;
     }
@@ -139,6 +142,18 @@ public class ProductEntity {
         if (newRates != null) {
             newRates.forEach(pro -> pro.setProduct(this));
             this.rates.addAll(newRates);
+        }
+    }
+
+    public List<PaymentEntity> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<PaymentEntity> newPayments) {
+        this.payments.clear();
+        if (newPayments != null) {
+            newPayments.forEach(pro -> pro.setProduct(this));
+            this.payments.addAll(newPayments);
         }
     }
 }

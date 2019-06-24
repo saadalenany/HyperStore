@@ -16,14 +16,12 @@ function addToCart(id, qty) {
         url: '/add_to_cart',
         data: "id="+id+"&qty="+quantity,
         success: function(data) {
-            console.log('Add to cart succeeded.');
             refreshCart();
         },
         failure: function(data) {
             console.log('Add to cart failed.');
         }
     });
-
 }
 
 function refreshCart() {
@@ -32,10 +30,8 @@ function refreshCart() {
         type: 'GET',
         url: '/refresh_cart',
         success: function(data) {
-            console.log('Refresh succeeded.');
             document.getElementById("shopping-cart-list").innerHTML = "";
             var products = JSON.parse(data);
-            console.log(Object.keys(products));
             if (products.length > 0) {
                 for(let i = 0; i < products.length; i++){
                     var product_widget = document.createElement("DIV");
@@ -65,7 +61,6 @@ function refreshCart() {
                     var product_name = document.createElement("H2");
                     product_name.className = "product-name";
 
-                    console.log(products[i].id);
                     var product_href = document.createElement("A");
                     product_href.href = "/by_product/" + products[i].id;
                     product_href.innerHTML = products[i].name;
@@ -77,6 +72,7 @@ function refreshCart() {
 
                     var product_button = document.createElement("BUTTON");
                     product_button.className = "cancel-btn";
+                    product_button.onclick = function() { deleteProduct(products[i].id, product_widget) };
 
                     var product_i = document.createElement("I");
                     product_i.className = "fa fa-trash";
@@ -96,5 +92,20 @@ function refreshCart() {
             console.log('Refresh failed.');
         }
     });
+}
 
+function deleteProduct(productId, item) {
+    $.ajax({
+        type: 'GET',
+        url: '/delete_from_cart',
+        data: "id="+productId,
+        success: function(data) {
+            item.parentNode.removeChild(item);
+            var total_qty = parseInt(document.getElementById("total_qty").innerHTML);
+            document.getElementById("total_qty").innerHTML = total_qty - 1 ;
+        },
+        failure: function(data) {
+            console.log('Add to cart failed.');
+        }
+    });
 }

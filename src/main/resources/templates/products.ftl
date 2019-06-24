@@ -71,7 +71,7 @@
                                         </div>
                                         <h2 class="product-name"><a href="/by_product/${product.getId()}">${product.getName()}</a></h2>
                                         <div class="product-btns">
-                                            <button onclick="addToCart(${product},1)" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
+                                            <button onclick="addToCart('${product.getId()}',1)" class="primary-btn add-to-cart"><i class="fa fa-shopping-cart"></i> Add to Cart</button>
                                         </div>
                                     </div>
                                 </div>
