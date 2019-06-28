@@ -17,17 +17,17 @@
 		<div class="container">
 			<!-- row -->
 			<div class="row">
-				<form id="checkout-form" class="clearfix">
+				<form action="/save_payment" method="POST" id="checkout-form" class="clearfix">
 					<div class="col-md-6">
 						<div class="billing-details">
 							<div class="section-title">
 								<h3 class="title">Billing Details</h3>
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="First Name">
+								<input class="input" type="text" name="first_name" placeholder="First Name">
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Last Name">
+								<input class="input" type="text" name="last_name" placeholder="Last Name">
 							</div>
 							<div class="form-group">
 								<input class="input" type="email" name="email" placeholder="Email">
@@ -54,10 +54,10 @@
                                 <input type="hidden" name="place" id="txtplacename"></input>
                             </div>
 							<div class="form-group">
-								<input class="input" type="text" name="zip-code" placeholder="ZIP Code">
+								<input class="input" type="text" name="zip_code" placeholder="ZIP Code">
 							</div>
 							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Telephone">
+								<input class="input" type="tel" name="phone" placeholder="Phone">
 							</div>
 						</div>
 					</div>
@@ -76,7 +76,27 @@
 							</div>
 							<div class="input-checkbox">
 								<input type="radio" name="shipping" id="shipping-2" value="standard">
-								<label for="shipping-2">Standard - $4.00</label>
+								<label for="shipping-2">Standard - $2.00</label>
+								<div class="caption">
+									<p>A Delivery Man will deliver you the product directly at home.<p>
+								</div>
+							</div>
+						</div>
+
+						<div class="Payment-methods">
+							<div class="section-title">
+								<h4 class="title">Payment Methods</h4>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="payment" id="payment-1" value="onland" checked>
+								<label for="payment-1">On-land -  $0.00</label>
+								<div class="caption">
+									<p>You can go to the market by your self & receive the product from there.<p>
+								</div>
+							</div>
+							<div class="input-checkbox">
+								<input type="radio" name="payment" id="payment-2" value="online">
+								<label for="payment-2">Online - $2.00</label>
 								<div class="caption">
 									<p>A Delivery Man will deliver you the product directly at home.<p>
 								</div>
