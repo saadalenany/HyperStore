@@ -12,7 +12,7 @@
 						<!-- footer logo -->
 						<div class="footer-logo">
                             <a class="logo" href="#">
-                                <img src="/img/logo.png" alt="">
+                                <img src="/img/hyper_store.png" alt="">
                             </a>
 						</div>
 						<!-- /footer logo -->
