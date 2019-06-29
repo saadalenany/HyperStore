@@ -86,7 +86,7 @@ public class AjaxController {
 
         ProductModel product = productController.get(id).getBody();
         assert product != null;
-        product.setQuantity(qty);
+        product.setReserved(qty);
 
         String macAddress = getClientMacAddress();
 
@@ -101,7 +101,7 @@ public class AjaxController {
         AtomicBoolean exists = new AtomicBoolean(false);
         products.forEach(pro -> {
             if (pro.getId().equals(id)) {
-                pro.setQuantity(qty);
+                pro.setReserved(qty);
                 exists.set(true);
             }
         });

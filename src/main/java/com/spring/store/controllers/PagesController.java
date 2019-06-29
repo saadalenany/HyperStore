@@ -1,14 +1,12 @@
 package com.spring.store.controllers;
 
 import com.spring.store.config.WebConfig;
-import com.spring.store.dao.models.AdminModel;
-import com.spring.store.dao.models.CategoryModel;
-import com.spring.store.dao.models.ProductModel;
-import com.spring.store.dao.models.RatesModel;
+import com.spring.store.dao.models.*;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,6 +39,9 @@ public class PagesController {
 
     @Autowired
     private RatesController ratesController;
+
+    @Autowired
+    private PaymentController paymentController;
 
     @RequestMapping({"/home", "/"})
     public String home(HttpServletRequest request, HttpServletResponse response) {
@@ -427,13 +428,124 @@ public class PagesController {
             int total = 0;
             for (ProductModel p : products) {
                 int discounted = p.getPrice() - ((p.getPrice() * p.getDiscountPrice()) / 100);
-                total += (discounted * p.getQuantity());
+                total += (discounted * p.getReserved());
             }
             map.put("products", products);
             map.put("total", total);
         }
 
         return render(map, "checkout.ftl");
+    }
+
+    @RequestMapping("/save_payment")
+    public void savePayment(HttpServletRequest request, HttpServletResponse response) {
+        String firstName = null, lastName = null, email = null, phone = null, zipCode = null, address = null, shipping = null, payment = null;
+        LocalDateTime buyDate = LocalDateTime.now();
+        String result = "failure";
+        if (request.getParameter("first_name") != null && !request.getParameter("first_name").isEmpty()) {
+            firstName = request.getParameter("first_name");
+        }
+        if (request.getParameter("last_name") != null && !request.getParameter("last_name").isEmpty()) {
+            lastName = request.getParameter("last_name");
+        }
+        if (request.getParameter("email") != null && !request.getParameter("email").isEmpty()) {
+            email = request.getParameter("email");
+        }
+        if (request.getParameter("phone") != null && !request.getParameter("phone").isEmpty()) {
+            phone = request.getParameter("phone");
+        }
+        if (request.getParameter("zip_code") != null && !request.getParameter("zip_code").isEmpty()) {
+            zipCode = request.getParameter("zip_code");
+        }
+        if ((request.getParameter("region") != null && !request.getParameter("region").isEmpty()) &
+                (request.getParameter("place") != null && !request.getParameter("place").isEmpty())) {
+            address = request.getParameter("region") + ", " + request.getParameter("place");
+        }
+        if (request.getParameter("shipping") != null && !request.getParameter("shipping").isEmpty()) {
+            shipping = request.getParameter("shipping");
+        }
+        if (request.getParameter("payment") != null && !request.getParameter("payment").isEmpty()) {
+            payment = request.getParameter("payment");
+        }
+
+        String macAddress = getClientMacAddress();
+        List<ProductModel> products = (List<ProductModel>) request.getSession().getAttribute(macAddress + " products");
+        for (ProductModel productModel : products) {
+            PaymentModel paymentModel = new PaymentModel();
+            paymentModel.setFirstName(firstName);
+            paymentModel.setLastName(lastName);
+            paymentModel.setEmail(email);
+            paymentModel.setPhone(phone);
+            paymentModel.setZipCode(zipCode);
+            paymentModel.setAddress(address);
+            paymentModel.setShipping(shipping);
+            paymentModel.setPayment(payment);
+
+            paymentModel.setBuyer(macAddress);
+            paymentModel.setBuyDate(buyDate);
+            paymentModel.setProductId(productModel.getId());
+            paymentModel.setQuantity(productModel.getReserved());
+
+            int discounted = productModel.getPrice() - ((productModel.getPrice() * productModel.getDiscountPrice()) / 100);
+            paymentModel.setPrice((discounted * productModel.getReserved()));
+            paymentModel.setPaid(0);
+
+            ResponseEntity<PaymentModel> posted = paymentController.post(paymentModel);
+            if (posted.getBody() != null) {
+                result = "success";
+            }
+        }
+
+        response.setHeader("Location", "/checkout_result/" + result);
+        response.setStatus(302);
+    }
+
+    @RequestMapping("/checkout_result/{result}")
+    public String checkoutSuccess(@PathVariable(name = "result") String result) {
+        HashMap<String, Object> map = new HashMap();
+        map.put("result", result);
+        return render(map, "checkout_result.ftl");
+    }
+
+    @RequestMapping("/sold/{adminId}")
+    public String soldProducts(@PathVariable(name = "adminId") String adminId,
+                               @RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                               HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        HashMap<String, Object> map = new HashMap();
+        if (session.getAttribute("categories") != null) {
+            map.put("categories", session.getAttribute("categories"));
+        } else {
+            List<CategoryModel> categories = categoryController.list().getBody();
+            map.put("categories", categories);
+        }
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
+            map.put("user", user);
+        } else {
+            return blank(map);
+        }
+
+        List<PaymentModel> payments = paymentController.getByAdminAsPage(adminId, page - 1, 10).getBody();
+
+        assert payments != null;
+        payments.forEach(pay -> {
+            pay.setProductModel(productController.get(pay.getProductId()).getBody());
+        });
+
+        double sizeInt = Objects.requireNonNull(paymentController.getByAdmin(adminId).getBody()).size();
+        double size = Math.ceil(sizeInt / 10.0);
+
+        if (page <= 0 || page > size) {
+            page = 1;
+        }
+
+        map.put("payments", payments);
+        map.put("page", page);
+        map.put("size", size);
+        response.setStatus(200);
+        return render(map, "sold_products.ftl");
     }
 
     @RequestMapping("/login")

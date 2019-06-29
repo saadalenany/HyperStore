@@ -24,18 +24,18 @@
 								<h3 class="title">Billing Details</h3>
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="first_name" placeholder="First Name">
+								<input class="input" type="text" name="first_name" placeholder="First Name" required>
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="last_name" placeholder="Last Name">
+								<input class="input" type="text" name="last_name" placeholder="Last Name" required>
 							</div>
 							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
+								<input class="input" type="email" name="email" placeholder="Email" required>
 							</div>
                             <script src="/js/location.js"></script>
                             <div class="group">
     							<div class="form-group">
-                                    <select class="input" style="display: block; height: 40px;" onchange="set_country(this,country,city_state)" size="1" name="region">
+                                    <select class="input" style="display: block; height: 40px;" onchange="set_country(this,country,city_state)" size="1" name="region" required>
                                         <option value="" disabled selected>SELECT REGION</option>
                                         <script type="text/javascript">
                                             setRegions(this);
@@ -43,21 +43,21 @@
                                     </select>
                                 </div>
     							<div class="form-group">
-                                    <select class="input" style="display: block; height: 40px;" name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)">
+                                    <select class="input" style="display: block; height: 40px;" name="country" size="1" disabled="disabled" onchange="set_city_state(this,city_state)" required>
                                     </select>
                                 </div>
     							<div class="form-group">
-                                    <select class="input" style="display: block; height: 40px;" name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)">
+                                    <select class="input" style="display: block; height: 40px;" name="city_state" size="1" disabled="disabled" onchange="print_city_state(country,this)" required>
                                     </select>
                                 </div>
                                 <input type="hidden" name="region" id="txtregion"></input>
                                 <input type="hidden" name="place" id="txtplacename"></input>
                             </div>
 							<div class="form-group">
-								<input class="input" type="text" name="zip_code" placeholder="ZIP Code">
+								<input class="input" type="text" name="zip_code" placeholder="ZIP Code" required>
 							</div>
 							<div class="form-group">
-								<input class="input" type="tel" name="phone" placeholder="Phone">
+								<input class="input" type="tel" name="phone" placeholder="Phone" required>
 							</div>
 						</div>
 					</div>
@@ -143,8 +143,8 @@
 										</td>
                                         <#assign x = product.getPrice() - product.getPrice() * product.getDiscountPrice() / 100>
 										<td class="price text-center"><strong>$${x}</strong><br><del class="font-weak"><small>$${product.getPrice()}</small></del></td>
-										<td class="qty text-center"><strong>$${product.getQuantity()}</strong></td>
-										<#assign sub_tot = x * product.getQuantity()>
+										<td class="qty text-center"><strong>$${product.getReserved()}</strong></td>
+										<#assign sub_tot = x * product.getReserved()>
 										<td class="total text-center"><strong class="primary-color">$${sub_tot}</strong></td>
 										<td class="text-right">
 										    <button class="main-btn icon-btn" onclick="deleteProductFromCheckout('${product.getId()}', ${index}, ${sub_tot}, ${total})"><i class="fa fa-close"></i></button>
@@ -165,7 +165,7 @@
                             </#if>
 							</table>
 							<div class="pull-right">
-								<button class="primary-btn">Place Order</button>
+								<input type="submit" class="primary-btn" value="Place Order"/>
 							</div>
 						</div>
 

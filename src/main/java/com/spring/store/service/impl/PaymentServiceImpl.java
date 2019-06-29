@@ -6,6 +6,8 @@ import com.spring.store.dao.repos.PaymentRepository;
 import com.spring.store.mappers.PaymentMapper;
 import com.spring.store.service.api.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,19 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<PaymentModel> list() {
         return paymentMapper.toModels(paymentRepository.findAll());
+    }
+
+    @Override
+    public List<PaymentModel> listByAdminAsPage(String adminId, Integer page, Integer size) {
+        Pageable pageWithElements = PageRequest.of(page, size);
+        List<PaymentEntity> byAdmin = paymentRepository.getByAdminAsPage(adminId, pageWithElements);
+        return paymentMapper.toModels(byAdmin);
+    }
+
+    @Override
+    public List<PaymentModel> listByAdmin(String adminId) {
+        List<PaymentEntity> byAdmin = paymentRepository.getByAdmin(adminId);
+        return paymentMapper.toModels(byAdmin);
     }
 
     @Override

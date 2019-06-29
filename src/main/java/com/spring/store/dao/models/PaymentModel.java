@@ -18,7 +18,7 @@ public class PaymentModel {
 
     private String zipCode;
 
-    private String macAddress;
+    private String buyer;
 
     private String phone;
 
@@ -28,7 +28,13 @@ public class PaymentModel {
 
     private String shipping;
 
+    private String payment;
+
     private Integer price;
+
+    private Integer paid;
+
+    private ProductModel productModel;
 
     public String getId() {
         return id;
@@ -86,12 +92,12 @@ public class PaymentModel {
         this.zipCode = zipCode;
     }
 
-    public String getMacAddress() {
-        return macAddress;
+    public String getBuyer() {
+        return buyer;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public String getPhone() {
@@ -126,6 +132,14 @@ public class PaymentModel {
         this.shipping = shipping;
     }
 
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
+
     public Integer getPrice() {
         return price;
     }
@@ -134,9 +148,25 @@ public class PaymentModel {
         this.price = price;
     }
 
+    public Integer getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Integer paid) {
+        this.paid = paid;
+    }
+
+    public ProductModel getProductModel() {
+        return productModel;
+    }
+
+    public void setProductModel(ProductModel productModel) {
+        this.productModel = productModel;
+    }
+
     @Override
     public String toString() {
-        return "PaymentModel = {" +
+        return "PaymentModel{" +
                 "id='" + id + '\'' +
                 ", productId='" + productId + '\'' +
                 ", firstName='" + firstName + '\'' +
@@ -144,12 +174,14 @@ public class PaymentModel {
                 ", email='" + email + '\'' +
                 ", address='" + address + '\'' +
                 ", zipCode='" + zipCode + '\'' +
-                ", macAddress='" + macAddress + '\'' +
+                ", buyer='" + buyer + '\'' +
                 ", phone='" + phone + '\'' +
                 ", buyDate=" + buyDate +
                 ", quantity=" + quantity +
                 ", shipping='" + shipping + '\'' +
+                ", payment='" + payment + '\'' +
                 ", price=" + price +
+                ", paid=" + paid +
                 '}';
     }
 }

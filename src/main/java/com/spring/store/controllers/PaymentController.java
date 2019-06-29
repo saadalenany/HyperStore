@@ -45,4 +45,15 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.getByProduct(product_id));
     }
 
+    @GetMapping("/{adminId}")
+    public ResponseEntity<List<PaymentModel>> getByAdmin(@PathVariable(name = "admin") String admin) {
+        return ResponseEntity.ok(paymentService.listByAdmin(admin));
+    }
+
+    @GetMapping("/{adminId}/page")
+    public ResponseEntity<List<PaymentModel>> getByAdminAsPage(@PathVariable(name = "admin") String admin,
+                                                               @RequestParam(name = "page") Integer page,
+                                                               @RequestParam(name = "size") Integer size) {
+        return ResponseEntity.ok(paymentService.listByAdminAsPage(admin, page, size));
+    }
 }

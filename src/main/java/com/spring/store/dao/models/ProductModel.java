@@ -28,6 +28,8 @@ public class ProductModel {
 
     private Integer quantity;
 
+    private Integer reserved;
+
     private Integer rate;
 
     private List<RatesModel> rates;
@@ -125,6 +127,14 @@ public class ProductModel {
         this.quantity = Integer.parseInt(replaced);
     }
 
+    public Integer getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Integer reserved) {
+        this.reserved = reserved;
+    }
+
     public Integer getRate() {
         return rate;
     }
@@ -162,6 +172,7 @@ public class ProductModel {
                 ", creationDate=" + creationDate +
                 ", discountPrice=" + discountPrice +
                 ", quantity=" + quantity +
+                ", reserved=" + reserved +
                 ", rate=" + rate +
                 ", rates=" + rates +
                 ", payments=" + payments +

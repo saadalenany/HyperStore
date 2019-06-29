@@ -44,6 +44,9 @@ public class ProductEntity {
     @Column(name="quantity")
     private Integer quantity;
 
+    @Column(name = "reserved")
+    private Integer reserved;
+
     @Column(name = "rate")
     private Integer rate;
 
@@ -107,6 +110,14 @@ public class ProductEntity {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getReserved() {
+        return reserved;
+    }
+
+    public void setReserved(Integer reserved) {
+        this.reserved = reserved;
     }
 
     public CategoryEntity getCategory() {

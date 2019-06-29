@@ -12,6 +12,7 @@ import java.util.List;
 public interface PaymentMapper {
 
     @Mapping(source = "product.id", target = "productId")
+    @Mapping(ignore = true, target = "productModel")
     PaymentModel toModel(PaymentEntity entity);
 
     List<PaymentModel> toModels(List<PaymentEntity> entities);

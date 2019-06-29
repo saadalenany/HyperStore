@@ -55,7 +55,7 @@
 					<!-- Logo -->
 					<div class="header-logo">
 						<a class="logo" href="/home">
-							<img src="/img/logo.png" alt="E-Shop">
+							<img src="/img/hyper_store.png" alt="E-Shop">
 						</a>
 					</div>
 					<!-- /Logo -->
@@ -175,6 +175,9 @@
 						<li><a href="/home">Home</a></li>
 						<li><a href="/categories">Categories</a></li>
 						<li><a href="/products?page=1">Shop</a></li>
+                    <#if user??>
+						<li><a href="/sold/${user.getId()}?page=1">Sold products</a></li>
+                    </#if>
 					</ul>
 				</div>
 				<!-- menu nav -->

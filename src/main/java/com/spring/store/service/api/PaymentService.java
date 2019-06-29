@@ -10,6 +10,10 @@ public interface PaymentService {
 
     List<PaymentModel> list();
 
+    List<PaymentModel> listByAdminAsPage(String adminId, Integer page, Integer size);
+
+    List<PaymentModel> listByAdmin(String adminId);
+
     PaymentModel get(String rateId);
 
     PaymentModel delete(String rateId);

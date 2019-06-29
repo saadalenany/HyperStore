@@ -34,8 +34,8 @@ public class PaymentEntity {
     @Column(name = "zip_code")
     private String zipCode;
 
-    @Column(name = "mac_address")
-    private String macAddress;
+    @Column(name = "buyer")
+    private String buyer;
 
     @Column(name = "phone")
     private String phone;
@@ -49,8 +49,14 @@ public class PaymentEntity {
     @Column(name = "shipping")
     private String shipping;
 
+    @Column(name = "payment")
+    private String payment;
+
     @Column(name = "price")
     private Integer price;
+
+    @Column(name = "paid")
+    private Integer paid;
 
     public String getId() {
         return id;
@@ -108,12 +114,12 @@ public class PaymentEntity {
         this.zipCode = zipCode;
     }
 
-    public String getMacAddress() {
-        return macAddress;
+    public String getBuyer() {
+        return buyer;
     }
 
-    public void setMacAddress(String macAddress) {
-        this.macAddress = macAddress;
+    public void setBuyer(String buyer) {
+        this.buyer = buyer;
     }
 
     public String getPhone() {
@@ -148,6 +154,14 @@ public class PaymentEntity {
         this.shipping = shipping;
     }
 
+    public String getPayment() {
+        return payment;
+    }
+
+    public void setPayment(String payment) {
+        this.payment = payment;
+    }
+
     public Integer getPrice() {
         return price;
     }
@@ -156,4 +170,11 @@ public class PaymentEntity {
         this.price = price;
     }
 
+    public Integer getPaid() {
+        return paid;
+    }
+
+    public void setPaid(Integer paid) {
+        this.paid = paid;
+    }
 }

@@ -42,6 +42,8 @@ function refreshCart() {
 
                     var product_img = document.createElement("IMG");
                     product_img.src = products[i].base64Image;
+                    product_img.width = "60";
+                    product_img.height = "60";
 
                     product_thumb.appendChild(product_img);
 
@@ -54,7 +56,7 @@ function refreshCart() {
 
                     var product_qty = document.createElement("SPAN");
                     product_qty.className = "qty";
-                    product_qty.innerHTML = "  x" + products[i].quantity;
+                    product_qty.innerHTML = "  x" + products[i].reserved;
 
                     product_price.appendChild(product_qty);
 
