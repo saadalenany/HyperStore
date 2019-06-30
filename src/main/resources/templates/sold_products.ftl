@@ -61,7 +61,6 @@
                             <th>Address</th>
                             <th>ZipCode</th>
                             <th>Phone</th>
-                            <th>MACAddress</th>
                             <th>Checkout</th>
                             <th>Approved</th>
                             <th>Quantity</th>
@@ -98,7 +97,6 @@
                             <td>${payment.getAddress()}</td>
                             <td>${payment.getZipCode()}</td>
                             <td>${payment.getPhone()}</td>
-                            <td>${payment.getBuyer()}</td>
                             <td>${payment.getBuyDate()}</td>
                             <#if payment.getPaidDate()??>
                                 <td>${payment.getPaidDate()}</td>
