@@ -17,6 +17,11 @@
 		<div class="container">
 			<!-- row -->
 			<div class="row">
+
+                <div class="alert alert-warning" style="width: 75%;margin: 0 auto;">
+                    <strong>Dead End!</strong> Perhaps you're trying to reach a non-existing page or you don't have credentials for it.
+                </div>
+
 			</div>
 			<!-- /row -->
 		</div>

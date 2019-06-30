@@ -501,8 +501,21 @@ public class PagesController {
     }
 
     @RequestMapping("/checkout_result/{result}")
-    public String checkoutSuccess(@PathVariable(name = "result") String result) {
+    public String checkoutSuccess(@PathVariable(name = "result") String result,
+                                  HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
+        if (session.getAttribute("user") != null) {
+            AdminModel user = (AdminModel) session.getAttribute("user");
+            user = adminController.get(user.getId()).getBody();
+            map.put("user", user);
+        }
+        if (session.getAttribute("categories") != null) {
+            map.put("categories", session.getAttribute("categories"));
+        } else {
+            List<CategoryModel> categories = categoryController.list().getBody();
+            map.put("categories", categories);
+        }
         map.put("result", result);
         return render(map, "checkout_result.ftl");
     }
@@ -510,6 +523,7 @@ public class PagesController {
     @RequestMapping("/sold/{adminId}")
     public String soldProducts(@PathVariable(name = "adminId") String adminId,
                                @RequestParam(required = false, name = "page", defaultValue = "1") int page,
+                               @RequestParam(required = false, name = "paymentId") String paymentId,
                                HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         HashMap<String, Object> map = new HashMap();
@@ -525,6 +539,18 @@ public class PagesController {
             map.put("user", user);
         } else {
             return blank(map);
+        }
+
+        if (paymentId != null && !paymentId.isEmpty()) {
+            boolean result = false;
+            PaymentModel paymentModel = paymentController.get(paymentId).getBody();
+            paymentModel.setPaidDate(LocalDateTime.now());
+            paymentModel.setPaid(1);
+            PaymentModel body = paymentController.post(paymentModel).getBody();
+            if (body != null) {
+                result = true;
+            }
+            map.put("result", result);
         }
 
         List<PaymentModel> payments = paymentController.getByAdminAsPage(adminId, page - 1, 10).getBody();

@@ -16,6 +16,19 @@
         <!-- container -->
         <div class="container">
 
+            <#if result??>
+                <br>
+                <#if result>
+                    <div class="alert alert-success" style="width: 50%;margin: 0 auto;">
+                        <strong>Success!</strong> Product approved successfully, Now out of the Queue.
+                    </div>
+                <#else>
+                    <div class="alert alert-danger" style="width: 50%;margin: 0 auto;">
+                        <strong>Failure!</strong> Some error occurred while approving the product, Try approving it later.
+                    </div>
+                </#if>
+                <br>
+            </#if>
             <!-- store top filter -->
             <div class="store-filter clearfix">
                 <div class="pull-right">
@@ -43,13 +56,14 @@
                         <tr>
                             <th>Product</th>
                             <th></th>
-                            <th>Firstname</th>
-                            <th>Lastname</th>
+                            <th>FirstName</th>
+                            <th>LastName</th>
                             <th>Address</th>
-                            <th>Zip Code</th>
+                            <th>ZipCode</th>
                             <th>Phone</th>
-                            <th>MAC Address</th>
-                            <th>Checked out</th>
+                            <th>MACAddress</th>
+                            <th>Checkout</th>
+                            <th>Approved</th>
                             <th>Quantity</th>
                             <th>Shipping</th>
                             <th>Payment</th>
@@ -58,6 +72,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                    <#if payments?size == 0>
+                        No Products Yet...
+                    <#else>
                     <#list payments as payment>
                         <tr>
                             <td class="thumb"><img src="${payment.getProductModel().getBase64Image()}" width="60px" height="60px" alt="${payment.getProductModel().getName()}"></td>
@@ -83,17 +100,27 @@
                             <td>${payment.getPhone()}</td>
                             <td>${payment.getBuyer()}</td>
                             <td>${payment.getBuyDate()}</td>
+                            <#if payment.getPaidDate()??>
+                                <td>${payment.getPaidDate()}</td>
+                            <#else>
+                                <td>Not Yet</td>
+                            </#if>
                             <td>${payment.getQuantity()}</td>
                             <td>${payment.getShipping()}</td>
                             <td>${payment.getPayment()}</td>
                             <td>${payment.getPrice()}</td>
                             <#if payment.getPaid() == 1>
-                                <td>Paid</td>
+                                <td><a><span class="fa fa-check"></span></a></td>
                             <#else>
-                                <td>Not Paid</td>
+                                <td>
+                                    <a href="/sold/${user.getId()}?page=${page}&paymentId=${payment.getId()}">
+                                        <button class="btn btn-default btn-sm"><i class="fa fa-check">Approve</i></button>
+                                    </a>
+                                </td>
                             </#if>
                         </tr>
                     </#list>
+                    </#if>
                     </tbody>
                 </table>
             </div>

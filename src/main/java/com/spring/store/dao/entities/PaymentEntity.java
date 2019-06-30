@@ -43,6 +43,9 @@ public class PaymentEntity {
     @Column(name = "buy_date")
     private LocalDateTime buyDate;
 
+    @Column(name = "paid_date")
+    private LocalDateTime paidDate;
+
     @Column(name = "quantity")
     private Integer quantity;
 
@@ -136,6 +139,14 @@ public class PaymentEntity {
 
     public void setBuyDate(LocalDateTime buyDate) {
         this.buyDate = buyDate;
+    }
+
+    public LocalDateTime getPaidDate() {
+        return paidDate;
+    }
+
+    public void setPaidDate(LocalDateTime paidDate) {
+        this.paidDate = paidDate;
     }
 
     public Integer getQuantity() {

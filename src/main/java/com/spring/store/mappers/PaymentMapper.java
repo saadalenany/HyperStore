@@ -12,12 +12,14 @@ import java.util.List;
 public interface PaymentMapper {
 
     @Mapping(source = "product.id", target = "productId")
+    @Mapping(source = "paidDate", target = "paidDate")
     @Mapping(ignore = true, target = "productModel")
     PaymentModel toModel(PaymentEntity entity);
 
     List<PaymentModel> toModels(List<PaymentEntity> entities);
 
     @Mapping(source = "productId", target = "product.id")
+    @Mapping(source = "paidDate", target = "paidDate")
     PaymentEntity toEntity(PaymentModel model);
 
     List<PaymentEntity> toEntities(List<PaymentModel> models);

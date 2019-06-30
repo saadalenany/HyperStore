@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>E-Shop</title>
+	<title>Hyper Store</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Hind:400,700" rel="stylesheet">
@@ -129,7 +129,7 @@
 							<#if user??>
                                 <a href="/create_product">
                                     <div>
-                                        <button type="button" class="btn btn-default btn-sm">Create Product</button>
+                                        <button type="button" class="btn btn-default btn-sm"><i class="fa fa-plus"> Create Product</i></button>
                                     </div>
                                 </a>
                             </#if>

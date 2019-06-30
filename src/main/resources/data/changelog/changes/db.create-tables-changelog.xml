@@ -152,6 +152,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="buy_date" type="datetime(3)"/>
+            <column name="paid_date" type="datetime(3)"/>
             <column name="quantity" type="int(3)"/>
             <column name="shipping" type="varchar(255)"/>
             <column name="payment" type="varchar(255)"/>

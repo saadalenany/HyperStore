@@ -24,6 +24,8 @@ public class PaymentModel {
 
     private LocalDateTime buyDate;
 
+    private LocalDateTime paidDate;
+
     private Integer quantity;
 
     private String shipping;
@@ -116,6 +118,14 @@ public class PaymentModel {
         this.buyDate = buyDate;
     }
 
+    public LocalDateTime getPaidDate() {
+        return paidDate;
+    }
+
+    public void setPaidDate(LocalDateTime paidDate) {
+        this.paidDate = paidDate;
+    }
+
     public Integer getQuantity() {
         return quantity;
     }
@@ -177,11 +187,13 @@ public class PaymentModel {
                 ", buyer='" + buyer + '\'' +
                 ", phone='" + phone + '\'' +
                 ", buyDate=" + buyDate +
+                ", paidDate=" + paidDate +
                 ", quantity=" + quantity +
                 ", shipping='" + shipping + '\'' +
                 ", payment='" + payment + '\'' +
                 ", price=" + price +
                 ", paid=" + paid +
+                ", productModel=" + productModel +
                 '}';
     }
 }
