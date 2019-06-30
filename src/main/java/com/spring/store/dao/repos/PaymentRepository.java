@@ -21,6 +21,12 @@ public interface PaymentRepository extends JpaRepository<PaymentEntity, String> 
     @Query("SELECT r FROM PaymentEntity r JOIN ProductEntity p ON p.id = r.product.id AND p.admin.id = ?1")
     List<PaymentEntity> getByAdminAsPage(String adminId, Pageable pageable);
 
+    @Query(value = "SELECT * FROM `payment` WHERE `buy_date` >= DATE_SUB(NOW(),INTERVAL 1 DAY)", nativeQuery = true)
+    List<PaymentEntity> getBySubmittedLastHour();
+
+    @Query(value = "SELECT * FROM `payment` WHERE `paid_date` >= DATE_SUB(NOW(),INTERVAL 1 DAY)", nativeQuery = true)
+    List<PaymentEntity> getByApprovedLastHour();
+
     @Modifying
     @Query("DELETE FROM PaymentEntity r WHERE r.id = ?1")
     void deleteById(String id);

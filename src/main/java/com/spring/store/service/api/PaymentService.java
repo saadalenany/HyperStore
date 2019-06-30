@@ -20,4 +20,7 @@ public interface PaymentService {
 
     List<PaymentModel> getByProduct(String productId);
 
+    List<PaymentModel> getSubmittedByLastHour();
+
+    List<PaymentModel> getApprovedByLastHour();
 }

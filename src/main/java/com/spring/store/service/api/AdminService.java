@@ -19,4 +19,6 @@ public interface AdminService {
     AdminModel getByUsernameAndPassword(String name, String password);
 
     AdminModel getByUsername(String username);
+
+    List<AdminModel> getSellersOfLastHour();
 }

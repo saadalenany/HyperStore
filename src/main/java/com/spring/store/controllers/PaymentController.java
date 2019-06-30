@@ -56,4 +56,15 @@ public class PaymentController {
                                                                @RequestParam(name = "size") Integer size) {
         return ResponseEntity.ok(paymentService.listByAdminAsPage(admin, page, size));
     }
+
+    @GetMapping("/submitted")
+    public ResponseEntity<List<PaymentModel>> getSubmittedByLastHour() {
+        return ResponseEntity.ok(paymentService.getSubmittedByLastHour());
+    }
+
+    @GetMapping("/approved")
+    public ResponseEntity<List<PaymentModel>> getApprovedByLastHour() {
+        return ResponseEntity.ok(paymentService.getApprovedByLastHour());
+    }
+
 }

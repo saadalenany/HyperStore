@@ -72,4 +72,16 @@ public class PaymentServiceImpl implements PaymentService {
         return paymentMapper.toModels(byProduct);
     }
 
+    @Override
+    public List<PaymentModel> getSubmittedByLastHour() {
+        List<PaymentEntity> bySubmittedLastHour = paymentRepository.getBySubmittedLastHour();
+        return paymentMapper.toModels(bySubmittedLastHour);
+    }
+
+    @Override
+    public List<PaymentModel> getApprovedByLastHour() {
+        List<PaymentEntity> byApprovedLastHour = paymentRepository.getByApprovedLastHour();
+        return paymentMapper.toModels(byApprovedLastHour);
+    }
+
 }

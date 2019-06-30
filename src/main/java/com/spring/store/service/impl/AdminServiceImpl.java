@@ -69,4 +69,10 @@ public class AdminServiceImpl implements AdminService {
         AdminEntity byName = repository.getByName(username);
         return mapper.toModel(byName);
     }
+
+    @Override
+    public List<AdminModel> getSellersOfLastHour() {
+        List<AdminEntity> sellersOfLastHour = repository.getSellersOfLastHour();
+        return mapper.toModels(sellersOfLastHour);
+    }
 }

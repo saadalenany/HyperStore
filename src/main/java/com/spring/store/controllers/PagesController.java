@@ -574,6 +574,60 @@ public class PagesController {
         return render(map, "sold_products.ftl");
     }
 
+    @RequestMapping("/queueing")
+    public String queueing() {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+
+        //retrieve the given values
+        double lambda = paymentController.getSubmittedByLastHour().getBody().size();
+        double mu = paymentController.getApprovedByLastHour().getBody().size();
+        double c = adminController.getSellersOfLastHour().getBody().size();
+
+        //start equating
+        double p = lambda / mu;
+        double utilizationFactor = p / c;
+
+        if (utilizationFactor > 1) {
+            map.put("errorMessage", "Utilization Factor was greater than 1");
+        }
+
+        double p0 = 0;
+        for (int i = 0; i < c; i++) {
+            p0 += Math.pow(p, i) / factorial(i);
+        }
+        p0 += Math.pow(p, c) / (factorial(c) * (1 - utilizationFactor));
+        p0 = Math.pow(p0, -1);
+
+        double lq = (Math.pow(p, (c + 1)) / (factorial(c - 1) * Math.pow((c - p), 2))) * p0;
+        double ls = lq + p;
+        double wq = lq / lambda;
+        double ws = wq + (1 / mu);
+
+        if (lq < 0) {
+            lq *= -1;
+        }
+        if (ls < 0) {
+            ls *= -1;
+        }
+        if (wq < 0) {
+            wq *= -1;
+        }
+        if (ws < 0) {
+            ws *= -1;
+        }
+
+        String wqStr = "Waiting time at queue " + wq + " hours";
+        String wsStr = "Waiting time at system " + ws + " hours";
+        String lsStr = "Num of customers at system " + ls + " customers";
+        String lqStr = "Num of customers at queue " + lq + " customers";
+
+        map.put("wq", wqStr);
+        map.put("ws", wsStr);
+        map.put("ls", lsStr);
+        map.put("lq", lqStr);
+        return render(map, "queueing.ftl");
+    }
+
     @RequestMapping("/login")
     public String login(HttpServletRequest request, HttpServletResponse response) {
         request.getSession().invalidate();
@@ -619,4 +673,11 @@ public class PagesController {
         return macAddress;
     }
 
+    private double factorial(double n) {
+        double fact = 1;
+        for (double i = 2.0; i <= n; i++) {
+            fact = fact * i;
+        }
+        return fact;
+    }
 }

@@ -50,6 +50,11 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getByUsername(name));
     }
 
+    @GetMapping("/sellers")
+    public ResponseEntity<List<AdminModel>> getSellersOfLastHour() {
+        return ResponseEntity.ok(adminService.getSellersOfLastHour());
+    }
+
     @GetMapping
     public ResponseEntity<List<AdminModel>> list() {
         return ResponseEntity.ok(adminService.list());

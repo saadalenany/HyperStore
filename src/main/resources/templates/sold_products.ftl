@@ -19,11 +19,13 @@
             <#if result??>
                 <br>
                 <#if result>
-                    <div class="alert alert-success" style="width: 50%;margin: 0 auto;">
+                    <div style="width: 75%;margin: 0 auto;" class="alert alert-success alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Success!</strong> Product approved successfully, Now out of the Queue.
                     </div>
                 <#else>
-                    <div class="alert alert-danger" style="width: 50%;margin: 0 auto;">
+                    <div style="width: 75%;margin: 0 auto;" class="alert alert-danger alert-dismissible">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
                         <strong>Failure!</strong> Some error occurred while approving the product, Try approving it later.
                     </div>
                 </#if>
